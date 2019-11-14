@@ -116,6 +116,8 @@ public class News {
         this.commentNum = commentNum;
     }
 
+
+
     @Override
     public String toString() {
         return "News{" +

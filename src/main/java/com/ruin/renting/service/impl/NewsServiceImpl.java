@@ -46,6 +46,11 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
+    public News findNewsByTitle(String title) {
+        return newsRepository.findByTitle(title);
+    }
+
+    @Override
     public void findTagsAndPartitions(Model model) {
         List<Tag> tags=tagRepository.findAll();
         model.addAttribute("tags",tags);

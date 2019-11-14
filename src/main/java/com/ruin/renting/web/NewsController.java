@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -57,4 +58,14 @@ public class NewsController {
         return "front/news/index";
     }
 
+    @RequestMapping("/single")
+    public String goSingle(Model model,@RequestParam(defaultValue = "none") String title){
+        if(title.equals("none"))
+            return "redirect:/news";
+        News news=newsService.findNewsByTitle(title);
+        model.addAttribute("news",news);
+
+        newsService.findTagsAndPartitions(model);
+        return "front/news/single";
+    }
 }

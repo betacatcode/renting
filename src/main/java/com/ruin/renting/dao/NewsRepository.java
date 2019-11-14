@@ -8,4 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @date 2019/11/13-11:00
  */
 public interface NewsRepository extends JpaRepository<News,Integer> {
+    public News findByTitle(String title);
 }

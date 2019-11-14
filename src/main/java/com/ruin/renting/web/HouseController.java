@@ -98,4 +98,12 @@ public class HouseController {
         model.addAttribute("owner",owner);
         return "front/details";
     }
+
+    @GetMapping(value = {"/","/index"})
+    public String index(Model model){
+
+        Page<House> highPriceHouses = houseService.findHighPriceHouses();
+        model.addAttribute("highPriceHouses",highPriceHouses);
+        return "front/index";
+    }
 }

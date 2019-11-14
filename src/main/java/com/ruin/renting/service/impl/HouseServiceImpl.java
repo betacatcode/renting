@@ -8,7 +8,9 @@ import com.ruin.renting.domain.SysUser;
 import com.ruin.renting.service.HouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -73,5 +75,12 @@ public class HouseServiceImpl implements HouseService {
     @Override
     public List<HouseImg> recommend(int colNum) {
         return houseImgRepository.getRandomImages(colNum);
+    }
+
+    @Override
+    public Page<House> findHighPriceHouses() {
+        Pageable pageable=PageRequest.of(0,4,Sort.by(Sort.Order.desc("price")));
+        Page<House> houses= houseRepository.findAll(pageable);
+        return houses;
     }
 }

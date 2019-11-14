@@ -3,6 +3,7 @@ package com.ruin.renting.dao;
 import com.ruin.renting.domain.House;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -25,4 +26,9 @@ public interface HouseRepository extends JpaRepository<House,Integer> {
                                          @Param("maxPrice")Integer maxPrice, Pageable pageable);
 
     public House findByName(String name);
+
+    public Page<House> findAll(Pageable pageable);
+
+    @Query(value = "SELECT * from tb_house ORDER BY size/price DESC LIMIT 4",nativeQuery=true)
+    public List<House> findHighPerformanceHouses();
 }

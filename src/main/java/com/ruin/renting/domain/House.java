@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author ruin
@@ -31,11 +32,11 @@ public class House {
     private String term;
     private Integer price;
 
-    @OneToMany(mappedBy = "house",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-    private List<HouseImg> houseImgList;
+    @OneToMany(mappedBy = "house",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+    private Set<HouseImg> houseImgList;
 
     @JsonIgnore
-    @ManyToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY,mappedBy = "houses")
+    @ManyToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER,mappedBy = "houses")
     private List<SysUser> users;
 
     public Integer getId() {
@@ -119,11 +120,11 @@ public class House {
         this.price = price;
     }
 
-    public List<HouseImg> getHouseImgList() {
+    public Set<HouseImg> getHouseImgList() {
         return houseImgList;
     }
 
-    public void setHouseImgList(List<HouseImg> houseImgList) {
+    public void setHouseImgList(Set<HouseImg> houseImgList) {
         this.houseImgList = houseImgList;
     }
 
