@@ -76,7 +76,7 @@
 						<div class="categ">
 						<h3>分区</h3>
 						<ul>
-							<li th:each="partition:${partitions}"><a href="#">[[${partition.name}]]</a></li>
+							<li th:each="partition:${partitions}"><a th:href="@{findNewsByPartition(name=${partition.name})}">[[${partition.name}]]</a></li>
 						</ul>
 						</div>
 						<div class="tags">
