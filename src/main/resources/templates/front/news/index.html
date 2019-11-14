@@ -82,7 +82,7 @@
 						<div class="tags">
 							<h4>标签</h4>
 							<ul>
-								<li th:each="tag:${tags}"><a href="#">[[${tag.name}]]</a></li>
+								<li th:each="tag:${tags}"><a th:href="@{findNewsByTag(name=${tag.name})}">[[${tag.name}]]</a></li>
 							</ul>
 						</div>
 						<div class="feature">
