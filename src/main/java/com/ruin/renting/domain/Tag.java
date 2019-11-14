@@ -45,4 +45,11 @@ public class Tag {
         this.num = num;
     }
 
+    public List<News> getNews() {
+        return news;
+    }
+
+    public void setNews(List<News> news) {
+        this.news = news;
+    }
 }

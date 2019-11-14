@@ -15,5 +15,7 @@ public interface NewsService {
 
     public List<News> findNewsByPartition(String name);
 
+    public List<News> findNewsByTag(String name);
+
     public void findTagsAndPartitions(Model model);
 }

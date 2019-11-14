@@ -41,8 +41,17 @@ public class NewsController {
 
     @RequestMapping("/findNewsByPartition")
     public String findNewsByPartition(String name,Model model){
-        List<News> newsByPartition = newsService.findNewsByPartition(name);
-        model.addAttribute("allNews",newsByPartition);
+        List<News> allNews = newsService.findNewsByPartition(name);
+        model.addAttribute("allNews",allNews);
+
+        newsService.findTagsAndPartitions(model);
+        return "front/news/index";
+    }
+
+    @RequestMapping("/findNewsByTag")
+    public String findNewsByTag(String name,Model model){
+        List<News> allNews=newsService.findNewsByTag(name);
+        model.addAttribute("allNews",allNews);
 
         newsService.findTagsAndPartitions(model);
         return "front/news/index";

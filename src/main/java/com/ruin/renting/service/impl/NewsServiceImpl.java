@@ -37,7 +37,12 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public List<News> findNewsByPartition(String name) {
-        return partitionRepository.findByName(name).getNews();
+        return partitionRepository.findPartitionByName(name).getNews();
+    }
+
+    @Override
+    public List<News> findNewsByTag(String name) {
+        return tagRepository.findTagByName(name).getNews();
     }
 
     @Override
