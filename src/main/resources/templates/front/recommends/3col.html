@@ -1,0 +1,105 @@
+<!DOCTYPE HTML>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+	<!---css--->
+	<link href="/front/css/bootstrap.css" rel='stylesheet' type='text/css' />
+	<link href="/front/css/style.css" rel='stylesheet' type='text/css' />
+	<!---css--->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+	<!---js--->
+	<script src="/front/js/jquery-1.11.1.min.js"></script>
+	<script src="/front/js/bootstrap.js"></script>
+	<!---fonts-->
+	<link href='/front/css/google1.css' rel='stylesheet' type='text/css'>
+	<link href='/front/css/google2.css' type='text/css'>
+	<link href='/front/css/google3.css' rel='stylesheet' type='text/css'>
+	<!---fonts-->
+	<script src="/front/js/responsiveslides.min.js"></script>
+	<script>
+        $(function () {
+            $("#slider").responsiveSlides({
+                auto:true,
+                nav: false,
+                speed: 500,
+                namespace: "callbacks",
+                pager:true,
+            });
+        });
+	</script>
+	<link href="/front/css/owl.carousel.css" rel="stylesheet">
+	<script src="/front/js/owl.carousel.js"></script>
+	<script>
+        $(document).ready(function() {
+            $("#owl-demo").owlCarousel({
+                items : 1,
+                lazyLoad : true,
+                autoPlay : true,
+                navigation : false,
+                navigationText :  false,
+                pagination : true,
+            });
+        });
+	</script>
+</head>
+<body>
+
+<!---header--->
+<div th:replace="front/commons/header"></div>
+<!---header--->
+		<!---banner--->
+		<div class="banner-section">
+			<div class="container">
+				<h2>推荐</h2>
+			</div>
+		</div>
+		<!---banner--->
+		<div class="content">
+			<div class="gallery-section">
+				<div class="container">
+					<div class="grid_3 grid_1" style="margin-left: 1em">
+						<h2>
+							<a th:href="@{/recommend(colNum=2)}"><span class="label label-info">2列</span></a>
+							<a th:href="@{/recommend(colNum=3)}"><span class="label label-success">3列</span></a>
+							<a th:href="@{/recommend(colNum=4)}"><span class="label label-info">4列</span></a>
+						</h2>
+					</div>
+					<div class="gallery-grids">
+						<div th:each="img:${imgs['p0']}" class="col-md-4 gallery-grid2">
+							<a th:href="@{getRecommendHouse(houseImgName=${img.name})}" class="swipebox"><span class="rollover1" style="width: 92%;height: 100%"> </span></a>
+							<img th:src="'/path/img/'+${img.name}" class="img-responsive" alt="/">
+						</div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="gallery-grids galry">
+						<div th:each="img:${imgs['p1']}" class="col-md-4 gallery-grid2">
+							<a th:href="@{getRecommendHouse(houseImgName=${img.name})}" class="swipebox"><span class="rollover1" style="width: 92%;height: 100%"> </span></a>
+							<img th:src="'/path/img/'+${img.name}" class="img-responsive" alt="/">
+						</div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="gallery-grids galry">
+						<div th:each="img:${imgs['p2']}" class="col-md-4 gallery-grid2">
+							<a th:href="@{getRecommendHouse(houseImgName=${img.name})}" class="swipebox"><span class="rollover1" style="width: 92%;height: 100%"> </span></a>
+							<img th:src="'/path/img/'+${img.name}" class="img-responsive" alt="/">
+						</div>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+    <!---footer--->
+    <div th:replace="front/commons/footer"></div>
+    <!---footer--->
+
+    <!-- login -->
+    <div th:replace="front/commons/login"></div>
+    <!-- //login -->
+
+    <!-- Register -->
+    <div th:replace="front/commons/register"></div>
+    <!-- //Register -->
+
+</body>
+</html>

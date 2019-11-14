@@ -1,0 +1,228 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<!---css--->
+	<link href="/front/css/bootstrap.css" rel='stylesheet' type='text/css' />
+	<link href="/front/css/style.css" rel='stylesheet' type='text/css' />
+	<!---css--->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+	<!---js--->
+	<script src="/front/js/jquery-1.11.1.min.js"></script>
+	<script src="/front/js/bootstrap.js"></script>
+	<!---fonts-->
+	<link href='/front/css/google1.css' rel='stylesheet' type='text/css'>
+	<link href='/front/css/google2.css' type='text/css'>
+	<link href='/front/css/google3.css' rel='stylesheet' type='text/css'>
+	<!---fonts-->
+	<script src="/front/js/responsiveslides.min.js"></script>
+	<script>
+        $(function () {
+            $("#slider").responsiveSlides({
+                auto:true,
+                nav: false,
+                speed: 500,
+                namespace: "callbacks",
+                pager:true,
+            });
+        });
+	</script>
+	<link href="/front/css/owl.carousel.css" rel="stylesheet">
+	<script src="/front/js/owl.carousel.js"></script>
+	<script>
+        $(document).ready(function() {
+            $("#owl-demo").owlCarousel({
+                items : 1,
+                lazyLoad : true,
+                autoPlay : true,
+                navigation : false,
+                navigationText :  false,
+                pagination : true,
+            });
+        });
+	</script>
+</head>
+<body>
+
+	<!---header--->
+	<div th:replace="front/commons/header"></div>
+	<!---header--->
+	<!---banner--->
+	<div class="banner-section">
+		<div class="container">
+			<h2>待出租</h2>
+		</div>
+	</div>
+	<!---banner--->
+	<div class="content">
+			<div class="properties-section">
+				<div class="container">
+				<div class="properties-grids">
+					<div class="col-md-9 forsales-left">
+						<div class="forsale">
+							<div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
+								<div id="myTabContent" class="tab-content">
+									<div role="tabpanel" class="tab-pane fade in active" id="home" aria-labelledby="home-tab">
+										<div th:each="house:${houses}" class="forsale-grids">
+											<h4><a href="#">[[${house.name}]]</a></h4>
+											<div class="forsale1">
+												<div class="forsale-left">
+													<a href="#"><img th:src="'/path/img/'+${house.houseImgList[0].name}" class="img-responsive" alt="/"></a>
+												</div>
+												<div class="forsale-right">
+													<h5><label>￥</label> [[${house.price}]] 每月 - <span>[[${house.apartment}]] - </span>[[${house.size}]]m²</h5>
+                                                    <p th:if="${#strings.length(house.profile)<100}" th:text="${house.profile}"></p>
+                                                    <p th:if="${#strings.length(house.profile)>=100}" th:text="${#strings.abbreviate(house.profile,100)}"></p>
+													<a th:href="@{details(name=${house.name})}"class="button4">详细内容</a>
+												</div>
+												<div class="clearfix"></div>
+												<ul>
+													<li>[[${house.apartment}]]</li>
+													<li>[[${house.subwayline}]]号线</li>
+													<li>朝[[${house.orientation}]]</li>
+													<li>[[${house.term}]]</li>
+													<li>[[${house.mode}]]</li>
+													<li>[[${house.item}]]</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3 properties-right" style="margin-top: 73px;">
+						<div class="properties-top" style="padding-bottom: 2em">
+							<h4>筛选条件</h4>
+							<form action="/forrent" method="post">
+								<div class="search1">
+									<div class="yourplace" style="margin-bottom: 20px">
+										<h5>地铁线</h5>
+										<select class="sel" name="subwayline">
+											<option value="unlimited">不限</option>
+											<option value="1">1号线</option>
+											<option value="2">2号线</option>
+											<option value="3">3号线</option>
+										</select>
+									</div>
+									<div class="yourplace" style="margin-bottom: 20px">
+										<h5>出租方式</h5>
+										<select class="sel" name="mode">
+											<option value="unlimited">不限</option>
+											<option value="整租">整租</option>
+											<option value="合租">合租</option>
+										</select>
+									</div>
+									<div class="yourplace" style="margin-bottom: 20px">
+										<h5>朝向</h5>
+										<select class="sel" name="orientation">
+											<option value="unlimited">不限</option>
+											<option value="南">南</option>
+											<option value="北</">北</option>
+											<option value="东">东</option>
+											<option value="西">西</option>
+											<option value="南北">南北</option>
+										</select>
+									</div>
+									<div class="yourplace" style="margin-bottom: 20px">
+										<h5>特色</h5>
+										<select class="sel" name="item">
+											<option value="unlimited">无要求</option>
+											<option value="独立卫生间">独立卫生间</option>
+											<option value="有阳台">有阳台</option>
+											<option value="离地铁近">离地铁近</option>
+											<option value="首次出租">首次出租</option>
+											<option value="免物业费">免物业费</option>
+										</select>
+									</div>
+									<div class="yourplace" style="margin-bottom: 20px">
+										<h5>租期</h5>
+										<select class="sel" name="term">
+											<option value="unlimited">不限</option>
+											<option value="月租">月租</option>
+											<option value="年租">年租</option>
+										</select>
+									</div>
+									<div class="yourplace-grids1" style="margin-bottom: 20px">
+										<div class="col-md-6 yourplace-grid">
+											<h5>最低价格</h5>
+											<select class="sel" name="minPrice">
+												<option value="0">0</option>
+												<option value="500">500</option>
+												<option value="1000">1000</option>
+												<option value="1500">1500</option>
+												<option value="2000">2000</option>
+												<option value="3000">3000</option>
+												<option value="5000">5000</option>
+											</select>
+										</div>
+										<div class="col-md-6 yourplace-grid">
+											<h5>最高价格</h5>
+											<select class="sel" name="maxPrice">
+												<option value="99999">10000+</option>
+												<option value="10000">10000</option>
+												<option value="5000">5000</option>
+												<option value="4000">4000</option>
+												<option value="3000">3000</option>
+												<option value="2000">2000</option>
+												<option value="1000">1000</option>
+											</select>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+									<input type="submit" value="查找">
+								</div>
+
+							</form>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				</div>
+			</div>
+		</div>
+
+	<div class="grid_3 grid_5" style="padding-top:0px">
+		<div class="col-md-6 col-md-offset-3">
+			<ul class="pagination pagination-lg">
+
+				<!--前一页-->
+				<li><a th:if="${currentPage}==0" th:href="@{/forrent(pageNum=0,subwayline=${subwayline},mode=${mode},
+				orientation=${orientation},item=${item},term=${term},minPrice=${minPrice},maxPrice=${maxPrice})}"><i class="fa fa-angle-left">«</i></a></li>
+				<li><a th:if="${currentPage}!=0" th:href="@{/forrent(pageNum=${currentPage}-1,subwayline=${subwayline},mode=${mode},
+				orientation=${orientation},item=${item},term=${term},minPrice=${minPrice},maxPrice=${maxPrice})}"><i class="fa fa-angle-left">«</i></a></li>
+				<div th:if="${totalPages!=0}" th:each="n:${#numbers.sequence(1,totalPages)}" class="pagination pagination-lg" style="float: left;margin: 0 0">
+					<li th:if="${n}-1==${currentPage}" class="active">
+						<a th:href="@{/forrent(pageNum=${n}-1,subwayline=${subwayline},mode=${mode},
+				orientation=${orientation},item=${item},term=${term},minPrice=${minPrice},maxPrice=${maxPrice})}" style="border-radius: 0">[[${n}]]</a>
+					</li>
+					<li th:if="${n}-1!=${currentPage}">
+						<a th:href="@{/forrent(pageNum=${n}-1,subwayline=${subwayline},mode=${mode},
+				orientation=${orientation},item=${item},term=${term},minPrice=${minPrice},maxPrice=${maxPrice})}" style="border-radius: 0">[[${n}]]</a>
+					</li>
+				</div>
+
+				<!--后一页-->
+				<li><a th:if="${currentPage}==${totalPages}-1" th:href="@{/forrent(pageNum=${currentPage},subwayline=${subwayline},mode=${mode},
+				orientation=${orientation},item=${item},term=${term},minPrice=${minPrice},maxPrice=${maxPrice})}"><i class="fa fa-angle-left">»</i></a></li>
+				<li><a th:if="${currentPage}!=${totalPages}-1" th:href="@{/forrent(pageNum=${currentPage}+1,subwayline=${subwayline},mode=${mode},
+				orientation=${orientation},item=${item},term=${term},minPrice=${minPrice},maxPrice=${maxPrice})}"><i class="fa fa-angle-left">»</i></a></li>
+			</ul>
+		</div>
+		<div class="clearfix"> </div>
+	</div>
+
+	<!---footer--->
+	<div th:replace="front/commons/footer"></div>
+	<!---footer--->
+
+	<!-- login -->
+	<div th:replace="front/commons/login"></div>
+	<!-- //login -->
+
+	<!-- Register -->
+	<div th:replace="front/commons/register"></div>
+	<!-- //Register -->
+</body>
+</html>

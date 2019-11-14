@@ -1,0 +1,44 @@
+package com.ruin.renting.web;
+
+import com.ruin.renting.domain.News;
+import com.ruin.renting.domain.Partition;
+import com.ruin.renting.domain.Tag;
+import com.ruin.renting.service.NewsService;
+import com.ruin.renting.service.PartitionService;
+import com.ruin.renting.service.TagService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
+
+/**
+ * @author ruin
+ * @date 2019/11/7-20:33
+ */
+@Controller
+public class NewsController {
+
+    @Autowired
+    NewsService newsService;
+
+    @Autowired
+    TagService tagService;
+
+    @Autowired
+    PartitionService partitionService;
+
+    @RequestMapping("/news")
+    public String goNews(Model model){
+        List<News> allNews = newsService.findAllNews();
+        model.addAttribute("allNews",allNews);
+
+        List<Tag> tags=tagService.findAllTags();
+        model.addAttribute("tags",tags);
+
+        List<Partition> partitions=partitionService.findAllPartitions();
+        model.addAttribute("partitions",partitions);
+        return "front/news/index";
+    }
+}
