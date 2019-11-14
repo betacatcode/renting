@@ -10,4 +10,5 @@ import java.util.List;
  */
 public interface PartitionService {
     public List<Partition> findAllPartitions();
+
 }

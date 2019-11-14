@@ -8,4 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @date 2019/11/13-19:35
  */
 public interface PartitionRepository extends JpaRepository<Partition,Integer> {
+    public Partition findByName(String name);
 }

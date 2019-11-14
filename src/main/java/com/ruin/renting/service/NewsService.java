@@ -1,6 +1,7 @@
 package com.ruin.renting.service;
 
 import com.ruin.renting.domain.News;
+import org.springframework.ui.Model;
 
 import java.util.List;
 
@@ -11,4 +12,8 @@ import java.util.List;
 public interface NewsService {
 
     public List<News> findAllNews();
+
+    public List<News> findNewsByPartition(String name);
+
+    public void findTagsAndPartitions(Model model);
 }

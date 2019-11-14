@@ -9,6 +9,7 @@ import com.ruin.renting.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -34,11 +35,17 @@ public class NewsController {
         List<News> allNews = newsService.findAllNews();
         model.addAttribute("allNews",allNews);
 
-        List<Tag> tags=tagService.findAllTags();
-        model.addAttribute("tags",tags);
-
-        List<Partition> partitions=partitionService.findAllPartitions();
-        model.addAttribute("partitions",partitions);
+        newsService.findTagsAndPartitions(model);
         return "front/news/index";
     }
+
+    @RequestMapping("/findNewsByPartition")
+    public String findNewsByPartition(String name,Model model){
+        List<News> newsByPartition = newsService.findNewsByPartition(name);
+        model.addAttribute("allNews",newsByPartition);
+
+        newsService.findTagsAndPartitions(model);
+        return "front/news/index";
+    }
+
 }

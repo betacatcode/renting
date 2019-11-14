@@ -22,4 +22,6 @@ public class PartitionServiceImpl implements PartitionService {
     public List<Partition> findAllPartitions() {
         return partitionRepository.findAll();
     }
+
+
 }
