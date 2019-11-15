@@ -104,6 +104,15 @@ public class HouseController {
 
         Page<House> highPriceHouses = houseService.findHighPriceHouses();
         model.addAttribute("highPriceHouses",highPriceHouses);
+
+        List<House> highPerformanceHouses = houseService.findHighPerformanceHouses();
+        for(int i=0;i<2;i++){
+            List<House> houses=new ArrayList<>();
+            for(int j=0;j<2;j++)
+                houses.add(highPerformanceHouses.get(i*2+j));
+            model.addAttribute("hp"+i,houses);
+        }
+
         return "front/index";
     }
 }

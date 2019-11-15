@@ -58,4 +58,9 @@ public class NewsServiceImpl implements NewsService {
         List<Partition> partitions=partitionRepository.findAll();
         model.addAttribute("partitions",partitions);
     }
+
+    @Override
+    public List<News> findRandomNews() {
+        return newsRepository.findRandomNews();
+    }
 }

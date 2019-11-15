@@ -15,12 +15,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("front/index");
-        registry.addViewController("/index").setViewName("front/index");
     }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/path/**").addResourceLocations("file:/E:/house/");
+        registry.addResourceHandler("/path/**").addResourceLocations("file:/D:/house/");
     }
 }

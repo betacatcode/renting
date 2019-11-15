@@ -83,4 +83,9 @@ public class HouseServiceImpl implements HouseService {
         Page<House> houses= houseRepository.findAll(pageable);
         return houses;
     }
+
+    @Override
+    public List<House> findHighPerformanceHouses() {
+        return houseRepository.findHighPerformanceHouses();
+    }
 }

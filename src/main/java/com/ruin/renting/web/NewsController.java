@@ -36,6 +36,8 @@ public class NewsController {
         List<News> allNews = newsService.findAllNews();
         model.addAttribute("allNews",allNews);
 
+        List<News> recommendNews=newsService.findRandomNews();
+        model.addAttribute("recommendNews",recommendNews);
         newsService.findTagsAndPartitions(model);
         return "front/news/index";
     }

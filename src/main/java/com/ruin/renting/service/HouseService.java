@@ -26,4 +26,6 @@ public interface HouseService {
     public List<HouseImg> recommend(int colNum);
 
     public Page<House> findHighPriceHouses();
+
+    public List<House> findHighPerformanceHouses();
 }

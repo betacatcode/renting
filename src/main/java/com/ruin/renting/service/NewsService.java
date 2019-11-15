@@ -20,4 +20,6 @@ public interface NewsService {
     public News findNewsByTitle(String title);
 
     public void findTagsAndPartitions(Model model);
+
+    public List<News> findRandomNews();
 }

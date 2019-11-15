@@ -48,66 +48,66 @@
 	<!---header--->
 	<div th:replace="front/commons/header"></div>
 	<!---header--->
-		<!---banner--->
-		<div class="banner-section">
-			<div class="container">
-				<h2>新闻热点</h2>
-			</div>
+	<!---banner--->
+	<div class="banner-section">
+		<div class="container">
+			<h2>详细内容</h2>
 		</div>
+	</div>
 	<!---banner--->
 	<div class="content">
 		<div class="blog-section">
-			<div class="container">
-				<div class="blog-grids">
-					<div class="col-md-9 blog-grid">
-						<div th:each="news:${allNews}" class="blog">
-							<h3><a th:href="@{/single(title=${news.title})}">[[${news.title}]]</a></h3>
-							<p>[[${news.pubTime}]] / Admin / [[${news.commentNum}]]条评论</p>
-							<a th:href="@{/single(title=${news.title})}"><img th:src="'/path/img/'+${news.img}" class="img-responsive" alt=""/></a>
-							<p th:if="${#strings.length(news.content)<200}" th:text="${news.content}"></p>
-							<p th:if="${#strings.length(news.content)>=200}" th:text="${#strings.abbreviate(news.content,200)}"></p>
-							<a th:href="@{/single(title=${news.title})}" class="button5 hvr-shutter-out-horizontal">详细内容</a>
-							<br>
-							<br>
-						</div>
-
-					</div>
-					<div class="col-md-3 blog-grid1">
-						<div class="categ">
-						<h3>分区</h3>
-						<ul>
-							<li th:each="partition:${partitions}"><a th:href="@{findNewsByPartition(name=${partition.name})}">[[${partition.name}]]</a></li>
-						</ul>
-						</div>
-						<div class="tags">
-							<h4>标签</h4>
-							<ul>
-								<li th:each="tag:${tags}"><a th:href="@{findNewsByTag(name=${tag.name})}">[[${tag.name}]]</a></li>
-							</ul>
-						</div>
-						<div class="feature">
-							<h4>推荐</h4>
-							<div class="feature-top" th:each="news:${recommendNews}">
-								<a th:href="@{/single(title=${news.title})}"><img th:src="'/path/img/'+${news.img}" class="img-responsive" alt="/"></a>
-								<h5>[[${news.title}]]</h5>
+				<div class="container">
+					<div class="blog-grids">
+						<div class="col-md-9 blog-grid">
+							<div class="blog">
+								<h3>[[${news.title}]]</h3>
+								<p>[[${news.pubTime}]] / Admin / [[${news.commentNum}]]条评论</p>
+								<img th:src="'/path/img/'+${news.img}" class="img-responsive" alt=""/>
+								<p>[[${news.content}]]</p>
+							</div>
+							<!---RESPONSES--->
+							<div class="coment-form">
+								<div class="container">
+									<h3>发表你的评论</h3>
+									<form>
+										<textarea type="text"  onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '...';}" required=""></textarea>
+										<input type="submit" value="提交" >
+									</form>
+								</div>
 							</div>
 						</div>
+						<div class="col-md-3 blog-grid1">
+							<div class="categ">
+								<h3>分区</h3>
+								<ul>
+									<li th:each="partition:${partitions}"><a th:href="@{findNewsByPartition(name=${partition.name})}">[[${partition.name}]]</a></li>
+								</ul>
+							</div>
+							<div class="tags">
+								<h4>标签</h4>
+								<ul>
+									<li th:each="tag:${tags}"><a th:href="@{findNewsByTag(name=${tag.name})}">[[${tag.name}]]</a></li>
+								</ul>
+							</div>
+						</div>
+						<div class="clearfix"></div>
 					</div>
-					<div class="clearfix"></div>
 				</div>
 			</div>
-		</div>
+		<!---footer--->
+		<div th:replace="front/commons/footer"></div>
+		<!---footer--->
+
+		<!-- login -->
+		<div th:replace="front/commons/login"></div>
+		<!-- //login -->
+
+		<!-- Register -->
+		<div th:replace="front/commons/register"></div>
+		<!-- //Register -->
 	</div>
-	<!---footer--->
-	<div th:replace="front/commons/footer"></div>
-	<!---footer--->
 
-	<!-- login -->
-	<div th:replace="front/commons/login"></div>
-	<!-- //login -->
 
-	<!-- Register -->
-	<div th:replace="front/commons/register"></div>
-	<!-- //Register -->
 </body>
 </html>
