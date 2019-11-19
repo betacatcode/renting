@@ -16,14 +16,18 @@ import java.util.List;
  */
 public interface HouseRepository extends JpaRepository<House,Integer> {
 
-    @Query("select h from House h where" +
-            " h.subwayline like CONCAT('%',:subwayline,'%') and h.mode like CONCAT('%',:mode,'%') and" +
-            " h.orientation like CONCAT('%',:orientation,'%') and h.item like CONCAT('%',:item,'%') and " +
-            "h.term like CONCAT('%',:term,'%') and h.price>=:minPrice and h.price<=:maxPrice")
-    public Page<House> findByAllCriteria(@Param("subwayline")String subwayline, @Param("mode")String mode,
-                                         @Param("orientation")String orientation, @Param("item")String item,
-                                         @Param("term")String term, @Param("minPrice")Integer minPrice,
-                                         @Param("maxPrice")Integer maxPrice, Pageable pageable);
+//    @Query("select h from House h where" +
+//            " h.subwayline like CONCAT('%',:subwayline,'%') and h.mode like CONCAT('%',:mode,'%') and" +
+//            " h.orientation like CONCAT('%',:orientation,'%') and h.item like CONCAT('%',:item,'%') and " +
+//            "h.term like CONCAT('%',:term,'%') and h.price>=:minPrice and h.price<=:maxPrice")
+//    public Page<House> findByAllCriteria(@Param("subwayline")String subwayline, @Param("mode")String mode,
+//                                         @Param("orientation")String orientation, @Param("item")String item,
+//                                         @Param("term")String term, @Param("minPrice")Integer minPrice,
+//                                         @Param("maxPrice")Integer maxPrice, Pageable pageable);
+
+    public Page<House> findBySubwaylineLikeAndModeLikeAndOrientationLikeAndItemLikeAndTermLikeAndPriceGreaterThanEqualAndPriceLessThanEqual(
+            String subwayline, String mode, String orientation, String item,
+            String term, Integer minPrice, Integer maxPrice, Pageable pageable);
 
     public House findByName(String name);
 

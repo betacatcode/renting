@@ -49,7 +49,9 @@ public class HouseServiceImpl implements HouseService {
             item="";
         if(term.equals("unlimited"))
             term="";
-        Page<House> houses=houseRepository.findByAllCriteria(subwayline,mode,orientation,item,term,minPrice,maxPrice,pageable);
+        Page<House> houses=houseRepository.findBySubwaylineLikeAndModeLikeAndOrientationLikeAndItemLikeAndTermLikeAndPriceGreaterThanEqualAndPriceLessThanEqual
+                ("%"+subwayline+"%","%"+mode+"%","%"+orientation+"%",
+                        "%"+item+"%","%"+term+"%",minPrice,maxPrice,pageable);
         return houses;
     }
 
