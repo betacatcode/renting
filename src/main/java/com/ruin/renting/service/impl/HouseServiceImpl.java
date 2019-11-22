@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author ruin
@@ -62,8 +63,11 @@ public class HouseServiceImpl implements HouseService {
 
     @Override
     public SysUser findOwner(House house) {
-        List<SysUser> users=house.getUsers();
-        SysUser owner=users.get(0);
+        Set<SysUser> users=house.getUsers();
+        SysUser owner = null;
+        if(users!=null&&users.size()>0) {
+            owner=users.iterator().next();
+        }
 
         for(SysUser user:users){
             if(user.getRoles().equals("ROLE_OWNER")){

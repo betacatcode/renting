@@ -32,12 +32,11 @@ public class House {
     private String term;
     private Integer price;
 
-    @OneToMany(mappedBy = "house",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "house",cascade=CascadeType.ALL)
     private Set<HouseImg> houseImgList;
 
-    @JsonIgnore
-    @ManyToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER,mappedBy = "houses")
-    private List<SysUser> users;
+    @ManyToMany(cascade=CascadeType.ALL,mappedBy = "houses")
+    private Set<SysUser> users;
 
     public Integer getId() {
         return id;
@@ -144,11 +143,11 @@ public class House {
         this.item = item;
     }
 
-    public List<SysUser> getUsers() {
+    public Set<SysUser> getUsers() {
         return users;
     }
 
-    public void setUsers(List<SysUser> users) {
+    public void setUsers(Set<SysUser> users) {
         this.users = users;
     }
 
