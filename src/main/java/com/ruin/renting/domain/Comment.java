@@ -18,12 +18,12 @@ public class Comment {
     private Date pubTime;
     private String content;
 
-    @ManyToOne(cascade={CascadeType.ALL},optional=false)
-    @JoinColumn(name="newsid")
+    @ManyToOne(targetEntity = News.class)
+    @JoinColumn(name="comment_news_id",referencedColumnName = "id")
     private News news;
 
-    @ManyToOne(cascade={CascadeType.ALL},optional=false)
-    @JoinColumn(name="userid")
+    @ManyToOne(targetEntity = SysUser.class )
+    @JoinColumn(name="comment_user_id",referencedColumnName = "id")
     private SysUser user;
 
     public Integer getId() {
@@ -56,5 +56,13 @@ public class Comment {
 
     public void setNews(News news) {
         this.news = news;
+    }
+
+    public SysUser getUser() {
+        return user;
+    }
+
+    public void setUser(SysUser user) {
+        this.user = user;
     }
 }

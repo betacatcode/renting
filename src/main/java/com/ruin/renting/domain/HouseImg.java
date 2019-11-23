@@ -20,7 +20,7 @@ public class HouseImg {
     private Integer id;
     private String name;
 
-    @ManyToOne(targetEntity = House.class,cascade={CascadeType.ALL})
+    @ManyToOne(targetEntity = House.class)
     @JoinColumn(name="img_house_id",referencedColumnName = "id")
     private House house;
 

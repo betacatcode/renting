@@ -1,7 +1,9 @@
 package com.ruin.renting.domain;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author ruin
@@ -17,8 +19,8 @@ public class Partition {
     private String name;
     private Integer num;
 
-    @OneToMany(mappedBy = "partition",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-    private List<News> news;
+    @OneToMany(mappedBy = "partition")
+    private Set<News> news=new HashSet<>();
 
     public Integer getId() {
         return id;
@@ -44,11 +46,11 @@ public class Partition {
         this.num = num;
     }
 
-    public List<News> getNews() {
+    public Set<News> getNews() {
         return news;
     }
 
-    public void setNews(List<News> news) {
+    public void setNews(Set<News> news) {
         this.news = news;
     }
 

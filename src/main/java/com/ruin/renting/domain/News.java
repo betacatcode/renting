@@ -2,7 +2,7 @@ package com.ruin.renting.domain;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -24,15 +24,17 @@ public class News {
     private String img;
     private Integer commentNum;
 
-    @OneToMany(mappedBy = "news",cascade= CascadeType.ALL,fetch= FetchType.EAGER)
-    private Set<Comment> commentList;
+    @OneToMany(mappedBy = "news",cascade= CascadeType.ALL)
+    private Set<Comment> commentList=new HashSet<>();
 
-    @ManyToMany(cascade= CascadeType.ALL,fetch= FetchType.EAGER)
-    @JoinTable(name = "tb_tag_news")
-    private Set<Tag> tags;
+    @ManyToMany(targetEntity = Tag.class)
+    @JoinTable(name = "tb_tag_news",
+        joinColumns={@JoinColumn(name = "news_id",referencedColumnName = "id")},
+        inverseJoinColumns = {@JoinColumn(name="tags_id",referencedColumnName = "id")})
+    private Set<Tag> tags=new HashSet<>();
 
-    @ManyToOne(cascade={CascadeType.ALL},optional=false)
-    @JoinColumn(name = "partitionid")
+    @ManyToOne(targetEntity = Partition.class)
+    @JoinColumn(name = "news_partition_id",referencedColumnName = "id")
     private Partition partition;
 
     public Integer getId() {

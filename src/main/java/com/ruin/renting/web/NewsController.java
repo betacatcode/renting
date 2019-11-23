@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author ruin
@@ -44,7 +45,7 @@ public class NewsController {
 
     @RequestMapping("/findNewsByPartition")
     public String findNewsByPartition(String name,Model model){
-        List<News> allNews = newsService.findNewsByPartition(name);
+        Set<News> allNews = newsService.findNewsByPartition(name);
         model.addAttribute("allNews",allNews);
 
         newsService.findTagsAndPartitions(model);
@@ -53,7 +54,7 @@ public class NewsController {
 
     @RequestMapping("/findNewsByTag")
     public String findNewsByTag(String name,Model model){
-        List<News> allNews=newsService.findNewsByTag(name);
+        Set<News> allNews=newsService.findNewsByTag(name);
         model.addAttribute("allNews",allNews);
 
         newsService.findTagsAndPartitions(model);

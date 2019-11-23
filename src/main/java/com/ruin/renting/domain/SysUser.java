@@ -5,9 +5,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author ruin
@@ -27,21 +25,26 @@ public class SysUser implements UserDetails {
     private String avatar;
     private String profile;
 
-    @ManyToMany(cascade = {CascadeType.REFRESH},fetch = FetchType.EAGER)
-    private List<SysRole> roles;
+    @ManyToMany(targetEntity = SysRole.class,cascade = CascadeType.ALL)
+    @JoinTable(name = "tb_sys_user_roles",
+        joinColumns = {@JoinColumn(name = "sys_user_id",referencedColumnName = "id")},
+        inverseJoinColumns = {@JoinColumn(name = "roles_id",referencedColumnName = "id")})
+    private Set<SysRole> roles=new HashSet<>();
 
-    @ManyToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-    @JoinTable(name="tb_sys_user_houses")
-    private List<House> houses;
+    @ManyToMany(targetEntity =House.class)
+    @JoinTable(name= "tb_sys_user_houses",
+        joinColumns = {@JoinColumn(name="users_id",referencedColumnName = "id")},
+        inverseJoinColumns = {@JoinColumn(name="houses_id",referencedColumnName = "id")})
+    private Set<House> houses=new HashSet<>();
 
-    @OneToMany(mappedBy = "user",cascade= CascadeType.ALL,fetch= FetchType.LAZY)
-    private List<Comment> commentList;
+    @OneToMany(mappedBy = "user",cascade= CascadeType.ALL)
+    private Set<Comment> commentList=new HashSet<>();
 
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> auths=new ArrayList<GrantedAuthority>();
-        List<SysRole> roles=this.getRoles();
+        Set<SysRole> roles=this.getRoles();
         for(SysRole role:roles){
             auths.add(new SimpleGrantedAuthority(role.getName()));
         }
@@ -94,22 +97,6 @@ public class SysUser implements UserDetails {
         this.password = password;
     }
 
-    public List<SysRole> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<SysRole> roles) {
-        this.roles = roles;
-    }
-
-    public List<House> getHouses() {
-        return houses;
-    }
-
-    public void setHouses(List<House> houses) {
-        this.houses = houses;
-    }
-
     public String getPhone() {
         return phone;
     }
@@ -142,11 +129,27 @@ public class SysUser implements UserDetails {
         this.profile = profile;
     }
 
-    public List<Comment> getCommentList() {
+    public Set<SysRole> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<SysRole> roles) {
+        this.roles = roles;
+    }
+
+    public Set<House> getHouses() {
+        return houses;
+    }
+
+    public void setHouses(Set<House> houses) {
+        this.houses = houses;
+    }
+
+    public Set<Comment> getCommentList() {
         return commentList;
     }
 
-    public void setCommentList(List<Comment> commentList) {
+    public void setCommentList(Set<Comment> commentList) {
         this.commentList = commentList;
     }
 

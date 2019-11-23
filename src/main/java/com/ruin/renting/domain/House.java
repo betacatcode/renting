@@ -4,6 +4,7 @@ package com.ruin.renting.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -33,10 +34,10 @@ public class House {
     private Integer price;
 
     @OneToMany(mappedBy = "house",cascade=CascadeType.ALL)
-    private Set<HouseImg> houseImgList;
+    private Set<HouseImg> houseImgList=new HashSet<>();
 
-    @ManyToMany(cascade=CascadeType.ALL,mappedBy = "houses")
-    private Set<SysUser> users;
+    @ManyToMany(mappedBy = "houses")
+    private Set<SysUser> users=new HashSet<>();
 
     public Integer getId() {
         return id;

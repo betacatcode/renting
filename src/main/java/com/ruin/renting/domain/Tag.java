@@ -1,7 +1,8 @@
 package com.ruin.renting.domain;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author ruin
@@ -18,8 +19,8 @@ public class Tag {
     private String name;
     private Integer num;
 
-    @ManyToMany(mappedBy = "tags",cascade= CascadeType.ALL,fetch= FetchType.LAZY)
-    private List<News> news;
+    @ManyToMany(mappedBy = "tags")
+    private Set<News> news=new HashSet<>();
 
     public Integer getId() {
         return id;
@@ -45,11 +46,11 @@ public class Tag {
         this.num = num;
     }
 
-    public List<News> getNews() {
+    public Set<News> getNews() {
         return news;
     }
 
-    public void setNews(List<News> news) {
+    public void setNews(Set<News> news) {
         this.news = news;
     }
 }

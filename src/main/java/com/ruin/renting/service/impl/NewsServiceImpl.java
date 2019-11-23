@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author ruin
@@ -36,12 +37,12 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public List<News> findNewsByPartition(String name) {
+    public Set<News> findNewsByPartition(String name) {
         return partitionRepository.findPartitionByName(name).getNews();
     }
 
     @Override
-    public List<News> findNewsByTag(String name) {
+    public Set<News> findNewsByTag(String name) {
         return tagRepository.findTagByName(name).getNews();
     }
 

@@ -1,7 +1,8 @@
 package com.ruin.renting.domain;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author ruin
@@ -17,6 +18,8 @@ public class SysRole {
     private Integer id;
     private String name;
 
+    @ManyToMany(mappedBy = "houses")
+    private Set<SysUser> users=new HashSet<>();
 
     public Integer getId() {
         return id;

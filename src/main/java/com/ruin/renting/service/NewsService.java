@@ -4,6 +4,7 @@ import com.ruin.renting.domain.News;
 import org.springframework.ui.Model;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author ruin
@@ -13,9 +14,9 @@ public interface NewsService {
 
     public List<News> findAllNews();
 
-    public List<News> findNewsByPartition(String name);
+    public Set<News> findNewsByPartition(String name);
 
-    public List<News> findNewsByTag(String name);
+    public Set<News> findNewsByTag(String name);
 
     public News findNewsByTitle(String title);
 
