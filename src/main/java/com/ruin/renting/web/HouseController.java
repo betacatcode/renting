@@ -13,10 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -115,4 +112,13 @@ public class HouseController {
 
         return "front/index";
     }
+
+
+    @RequestMapping("/findHouses")
+    @ResponseBody
+    public Page<House> findHouses(@RequestParam(defaultValue = "0")int pageNum){
+        Page<House> data=houseService.findAllHouses(PageRequest.of(pageNum,10));
+        return data;
+    }
+
 }

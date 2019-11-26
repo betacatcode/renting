@@ -33,9 +33,11 @@ public class House {
     private String term;
     private Integer price;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "house",cascade=CascadeType.ALL)
     private Set<HouseImg> houseImgList=new HashSet<>();
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "houses")
     private Set<SysUser> users=new HashSet<>();
 
