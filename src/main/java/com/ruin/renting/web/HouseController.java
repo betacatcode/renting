@@ -7,6 +7,7 @@ import com.ruin.renting.domain.SysUser;
 import com.ruin.renting.service.HouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,10 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author ruin
@@ -139,4 +137,17 @@ public class HouseController {
         return "redirect:/back/houseManage";
     }
 
+    @RequestMapping("/back/findByHouseNameLike")
+    public String findByHouseNameLike(String name, Model model,@RequestParam(defaultValue = "0") Integer pageNum){
+        List<House> houses = houseService.findByNameLike(name, PageRequest.of(pageNum, 10)).getContent();
+
+        model.addAttribute("houses",houses);
+        return "/back/houseManage";
+    }
+
+    @RequestMapping("/getHouseImgByID")
+    @ResponseBody
+    public Set<HouseImg> getHouseImgByID(Integer ID){
+        return houseService.findHouseImgById(ID);
+    }
 }

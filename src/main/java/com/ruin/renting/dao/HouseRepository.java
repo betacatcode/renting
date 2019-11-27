@@ -36,5 +36,5 @@ public interface HouseRepository extends JpaRepository<House,Integer> {
     @Query(value = "SELECT * from tb_house ORDER BY size/price DESC LIMIT 4",nativeQuery=true)
     public List<House> findHighPerformanceHouses();
 
-
+    public Page<House> findByNameLike(String name,Pageable pageable);
 }
