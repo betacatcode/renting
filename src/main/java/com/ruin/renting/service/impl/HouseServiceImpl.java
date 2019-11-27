@@ -99,4 +99,21 @@ public class HouseServiceImpl implements HouseService {
     public void addHouse(House house) {
         houseRepository.save(house);
     }
+
+    @Override
+    public void deleteById(Integer id) {
+        houseRepository.deleteById(id);
+    }
+
+    @Override
+    public House findByID(Integer id) {
+        return houseRepository.findById(id).get();
+    }
+
+    @Override
+    public void updateHouse(House house) {
+        houseRepository.save(house);
+    }
+
+
 }

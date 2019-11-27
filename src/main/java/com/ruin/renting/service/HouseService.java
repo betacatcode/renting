@@ -30,4 +30,10 @@ public interface HouseService {
     public List<House> findHighPerformanceHouses();
 
     public void addHouse(House house);
+
+    public void deleteById(Integer id);
+
+    public House findByID(Integer id);
+
+    public void updateHouse(House house);
 }

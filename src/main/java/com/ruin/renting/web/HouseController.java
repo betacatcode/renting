@@ -113,6 +113,30 @@ public class HouseController {
         return "front/index";
     }
 
+    @RequestMapping("/deleteByID")
+    @ResponseBody
+    public String deleteById(Integer ID){
 
+        houseService.deleteById(ID);
+        return "200";
+    }
+
+    @RequestMapping("/getHouseByID")
+    @ResponseBody
+    public House getHouseByID(Integer ID){
+        return houseService.findByID(ID);
+    }
+
+    @RequestMapping("/addHouse")
+    public String addHouse(House house){
+        houseService.addHouse(house);
+        return "redirect:/back/houseManage";
+    }
+
+    @RequestMapping("/updateHouse")
+    public String updateHouse(House house){
+        houseService.updateHouse(house);
+        return "redirect:/back/houseManage";
+    }
 
 }

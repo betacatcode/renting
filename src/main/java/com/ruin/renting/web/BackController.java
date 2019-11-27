@@ -36,10 +36,5 @@ public class BackController {
         return "/back/houseManage";
     }
 
-    @RequestMapping("/addHouse")
-    public String addHouse(House house){
 
-        houseService.addHouse(house);
-        return "redirect:/back/houseManage";
-    }
 }
