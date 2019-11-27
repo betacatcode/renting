@@ -28,4 +28,6 @@ public interface HouseService {
     public Page<House> findHighPriceHouses();
 
     public List<House> findHighPerformanceHouses();
+
+    public void addHouse(House house);
 }

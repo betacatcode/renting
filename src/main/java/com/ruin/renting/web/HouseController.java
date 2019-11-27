@@ -114,11 +114,5 @@ public class HouseController {
     }
 
 
-    @RequestMapping("/findHouses")
-    @ResponseBody
-    public Page<House> findHouses(@RequestParam(defaultValue = "0")int pageNum){
-        Page<House> data=houseService.findAllHouses(PageRequest.of(pageNum,10));
-        return data;
-    }
 
 }

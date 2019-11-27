@@ -94,4 +94,9 @@ public class HouseServiceImpl implements HouseService {
     public List<House> findHighPerformanceHouses() {
         return houseRepository.findHighPerformanceHouses();
     }
+
+    @Override
+    public void addHouse(House house) {
+        houseRepository.save(house);
+    }
 }
