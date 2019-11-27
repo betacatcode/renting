@@ -97,7 +97,15 @@ public class HouseServiceImpl implements HouseService {
 
     @Override
     public void addHouse(House house) {
+        house.setVideo("no");
+        for(int i=1;i<=4;i++){
+            HouseImg houseImg=new HouseImg();
+            houseImg.setName("default.jpg");
+            houseImg.setHouse(house);
+            house.getHouseImgList().add(houseImg);
+        }
         houseRepository.save(house);
+
     }
 
     @Override
@@ -113,6 +121,18 @@ public class HouseServiceImpl implements HouseService {
     @Override
     public void updateHouse(House house) {
         houseRepository.save(house);
+    }
+
+    @Override
+    public Page<House> findByNameLike(String name,Pageable pageable) {
+        return houseRepository.findByNameLike("%"+name+"%",pageable);
+    }
+
+    @Override
+    public Set<HouseImg> findHouseImgById(Integer ID) {
+        House house=findByID(ID);
+        Set<HouseImg> imgs=house.getHouseImgList();
+        return imgs;
     }
 
 

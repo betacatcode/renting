@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.ui.Model;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author ruin
@@ -36,4 +37,8 @@ public interface HouseService {
     public House findByID(Integer id);
 
     public void updateHouse(House house);
+
+    public Page<House> findByNameLike(String name,Pageable pageable);
+
+    public Set<HouseImg> findHouseImgById(Integer id);
 }
