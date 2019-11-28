@@ -15,7 +15,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 /**
@@ -147,7 +150,14 @@ public class HouseController {
 
     @RequestMapping("/getHouseImgByID")
     @ResponseBody
-    public Set<HouseImg> getHouseImgByID(Integer ID){
+    public List<HouseImg> getHouseImgByID(Integer ID){
         return houseService.findHouseImgById(ID);
     }
+
+    @RequestMapping("/back/updateImg")
+    public String updateImg(Integer id,HttpServletRequest request){
+        houseService.updateImg(id,request);
+        return "redirect:/back/houseManage";
+    }
+
 }

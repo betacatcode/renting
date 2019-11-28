@@ -6,6 +6,7 @@ import com.ruin.renting.domain.House;
 import com.ruin.renting.domain.HouseImg;
 import com.ruin.renting.domain.SysUser;
 import com.ruin.renting.service.HouseService;
+import com.ruin.renting.utils.ImgUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,9 +14,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import java.util.List;
-import java.util.Set;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 
 /**
  * @author ruin
@@ -28,8 +31,12 @@ public class HouseServiceImpl implements HouseService {
     @Autowired
     public HouseRepository houseRepository;
 
+
     @Autowired
     public HouseImgRepository houseImgRepository;
+
+    @Autowired
+    public ImgUtil imgUtil;
 
     @Override
     public Page<House> findAllHouses(Pageable pageable) {
@@ -129,10 +136,50 @@ public class HouseServiceImpl implements HouseService {
     }
 
     @Override
-    public Set<HouseImg> findHouseImgById(Integer ID) {
+    public List<HouseImg> findHouseImgById(Integer ID) {
         House house=findByID(ID);
         Set<HouseImg> imgs=house.getHouseImgList();
-        return imgs;
+
+        List<HouseImg> houseImgs=new ArrayList<HouseImg>(imgs);
+        Collections.sort(houseImgs, new Comparator<HouseImg>() {
+            @Override
+            public int compare(HouseImg o1, HouseImg o2) {
+                return o1.getId()-o2.getId();
+            }
+        });
+        return houseImgs;
+    }
+
+    @Override
+    public void updateImg(Integer id, HttpServletRequest request) {
+        MultipartHttpServletRequest mRequest = (MultipartHttpServletRequest)request;
+        House thisHouse=findByID(id);
+        String houseName=thisHouse.getName();
+        MultipartFile[]multipartFiles=new MultipartFile[4];
+
+        List<HouseImg> houseImgs=new ArrayList<HouseImg>(thisHouse.getHouseImgList());
+        Collections.sort(houseImgs, new Comparator<HouseImg>() {
+            @Override
+            public int compare(HouseImg o1, HouseImg o2) {
+                return o1.getId()-o2.getId();
+            }
+        });
+
+        for(int i=0;i<4;i++){
+            if(!mRequest.getFile("file"+i).getOriginalFilename().equals("")){
+                multipartFiles[i]=mRequest.getFile("file"+i);
+                String imgName=imgUtil.saveImage(multipartFiles[i],houseName,i);
+
+                HouseImg oldHouseImg=houseImgs.get(i);
+                HouseImg newHouseImg=new HouseImg(imgName);
+
+                newHouseImg.setId(oldHouseImg.getId());
+                newHouseImg.setHouse(thisHouse);
+                houseImgRepository.save(newHouseImg);
+            }
+
+
+        }
     }
 
 

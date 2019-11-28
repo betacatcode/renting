@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.ui.Model;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Set;
 
@@ -40,5 +41,7 @@ public interface HouseService {
 
     public Page<House> findByNameLike(String name,Pageable pageable);
 
-    public Set<HouseImg> findHouseImgById(Integer id);
+    public List<HouseImg> findHouseImgById(Integer id);
+
+    public void updateImg(Integer id,HttpServletRequest request);
 }

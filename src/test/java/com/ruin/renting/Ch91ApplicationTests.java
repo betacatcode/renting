@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.List;
@@ -77,5 +78,12 @@ class Ch91ApplicationTests {
 		List<News> allNews=newsRepository.findRandomNews();
 		for(News n:allNews)
 			System.out.println(n);
+	}
+
+	@Test
+	void findByNameLikeTest(){
+		List<House> houses=houseService.findByNameLike("桥", PageRequest.of(0, 10)).getContent();
+		for(House house:houses)
+			System.out.println(house);
 	}
 }

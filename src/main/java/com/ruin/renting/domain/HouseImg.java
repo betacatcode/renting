@@ -24,6 +24,13 @@ public class HouseImg {
     @JoinColumn(name="img_house_id",referencedColumnName = "id")
     private House house;
 
+    public HouseImg() {
+    }
+
+    public HouseImg(String name) {
+        this.name = name;
+    }
+
     public Integer getId() {
         return id;
     }
