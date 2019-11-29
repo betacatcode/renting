@@ -6,6 +6,7 @@ import com.ruin.renting.domain.SysUser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.ui.Model;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -44,4 +45,6 @@ public interface HouseService {
     public List<HouseImg> findHouseImgById(Integer id);
 
     public void updateImg(Integer id,HttpServletRequest request);
+
+    public void updateVideo(Integer id,MultipartFile video);
 }

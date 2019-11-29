@@ -12,26 +12,18 @@ import java.io.IOException;
  */
 
 @Component
-public class ImgUtil {
+public class ImageUtil extends FileUtil{
     public String saveImage(MultipartFile img, String houseName,int num){
         String[]imgNames=img.getOriginalFilename().split("\\.");
         String imgName=houseName+"_"+num+"."+imgNames[1];
 
         String path="D:\\house\\img\\";
         File file=new File(path);
-        String  pathFile = path + File.separator + imgName;
+        String  pathFile = path + File.separator + imgName.toLowerCase();
         File newFile=new File(pathFile);
 
-        if(!file.exists())
-            file.mkdirs();
-        else {
-            try {
-                if(img.getSize()!=0)
-                    img.transferTo(newFile);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        saveFile(file,img,newFile);
         return imgName;
     }
+
 }

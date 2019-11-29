@@ -154,9 +154,21 @@ public class HouseController {
         return houseService.findHouseImgById(ID);
     }
 
+    @RequestMapping("/getHouseVideoByID")
+    @ResponseBody
+    public String getHouseVideoByID(Integer ID){
+        return houseService.findByID(ID).getVideo();
+    }
+
     @RequestMapping("/back/updateImg")
     public String updateImg(Integer id,HttpServletRequest request){
         houseService.updateImg(id,request);
+        return "redirect:/back/houseManage";
+    }
+
+    @RequestMapping("/back/updateVideo")
+    public String updateVideo(Integer id,MultipartFile video){
+        houseService.updateVideo(id,video);
         return "redirect:/back/houseManage";
     }
 
