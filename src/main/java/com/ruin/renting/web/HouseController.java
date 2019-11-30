@@ -142,9 +142,11 @@ public class HouseController {
 
     @RequestMapping("/back/findByHouseNameLike")
     public String findByHouseNameLike(String name, Model model,@RequestParam(defaultValue = "0") Integer pageNum){
-        List<House> houses = houseService.findByNameLike(name, PageRequest.of(pageNum, 10)).getContent();
+        Page<House> houses = houseService.findByNameLike(name, PageRequest.of(pageNum, 10));
 
         model.addAttribute("houses",houses);
+        model.addAttribute("type","query");
+        model.addAttribute("name",name);
         return "/back/houseManage";
     }
 

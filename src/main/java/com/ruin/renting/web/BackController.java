@@ -29,8 +29,9 @@ public class BackController {
 
     @RequestMapping("/houseManage")
     public String goHouse(Model model,@RequestParam(defaultValue = "0")int pageNum) {
-        Page<House> data=houseService.findAllHouses(PageRequest.of(pageNum,15));
-        model.addAttribute("houses",data.getContent());
+        Page<House> data=houseService.findAllHouses(PageRequest.of(pageNum,10));
+        model.addAttribute("houses",data);
+        model.addAttribute("type","show");
         return "/back/houseManage";
     }
 

@@ -15,7 +15,7 @@ import java.io.IOException;
 public class ImageUtil extends FileUtil{
     public String saveImage(MultipartFile img, String houseName,int num){
         String[]imgNames=img.getOriginalFilename().split("\\.");
-        String imgName=houseName+"_"+num+"."+imgNames[1];
+        String imgName=houseName+"_"+num+".jpg";
 
         String path="D:\\house\\img\\";
         File file=new File(path);
