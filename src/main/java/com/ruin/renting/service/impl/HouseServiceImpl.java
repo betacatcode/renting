@@ -189,7 +189,7 @@ public class HouseServiceImpl implements HouseService {
         for(int i=0;i<4;i++){
             if(!mRequest.getFile("file"+i).getOriginalFilename().equals("")){
                 multipartFiles[i]=mRequest.getFile("file"+i);
-                String imgName= imageUtil.saveImage(multipartFiles[i],houseName,i);
+                String imgName= imageUtil.saveHouseImage(multipartFiles[i],houseName,i);
 
                 HouseImg oldHouseImg=houseImgs.get(i);
                 HouseImg newHouseImg=new HouseImg(imgName);

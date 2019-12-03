@@ -13,7 +13,7 @@ import java.io.IOException;
 
 @Component
 public class ImageUtil extends FileUtil{
-    public String saveImage(MultipartFile img, String houseName,int num){
+    public String saveHouseImage(MultipartFile img, String houseName,int num){
         String[]imgNames=img.getOriginalFilename().split("\\.");
         String imgName=houseName+"_"+num+".jpg";
 

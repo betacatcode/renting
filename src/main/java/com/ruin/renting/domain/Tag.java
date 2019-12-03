@@ -1,5 +1,8 @@
 package com.ruin.renting.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,6 +22,7 @@ public class Tag {
     private String name;
     private Integer num;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "tags")
     private Set<News> news=new HashSet<>();
 
@@ -52,5 +56,14 @@ public class Tag {
 
     public void setNews(Set<News> news) {
         this.news = news;
+    }
+
+    @Override
+    public String toString() {
+        return "Tag{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", num=" + num +
+                '}';
     }
 }

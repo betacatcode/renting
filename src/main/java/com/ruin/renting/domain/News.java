@@ -1,5 +1,7 @@
 package com.ruin.renting.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.HashSet;
@@ -20,7 +22,6 @@ public class News {
     private String title;
     private String content;
     private Date pubTime;
-    private Integer like;
     private String img;
     private Integer commentNum;
 
@@ -85,15 +86,6 @@ public class News {
         this.tags = tags;
     }
 
-    public Integer getLike() {
-        return like;
-    }
-
-    public void setLike(Integer like) {
-        this.like = like;
-    }
-
-
     public Partition getPartition() {
         return partition;
     }
@@ -118,8 +110,6 @@ public class News {
         this.commentNum = commentNum;
     }
 
-
-
     @Override
     public String toString() {
         return "News{" +
@@ -127,7 +117,6 @@ public class News {
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", pubTime=" + pubTime +
-                ", like=" + like +
                 ", commentList=" + commentList +
                 ", tags=" + tags +
                 ", partition=" + partition +

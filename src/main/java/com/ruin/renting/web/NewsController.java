@@ -1,5 +1,6 @@
 package com.ruin.renting.web;
 
+import com.ruin.renting.domain.House;
 import com.ruin.renting.domain.News;
 import com.ruin.renting.domain.Partition;
 import com.ruin.renting.domain.Tag;
@@ -7,6 +8,8 @@ import com.ruin.renting.service.NewsService;
 import com.ruin.renting.service.PartitionService;
 import com.ruin.renting.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -70,5 +73,17 @@ public class NewsController {
 
         newsService.findTagsAndPartitions(model);
         return "front/news/single";
+    }
+
+    @RequestMapping("/back/findByNewsTitleLike")
+    public String findByNewsTitleLike(String title, Model model,@RequestParam(defaultValue = "0") Integer pageNum){
+        Page<News> newses = newsService.findByTitleLike(title, PageRequest.of(pageNum, 10));
+        List<Partition> partitions=partitionService.findAllPartitions();
+
+        model.addAttribute("newses",newses);
+        model.addAttribute("partitions",partitions);
+        model.addAttribute("type","query");
+        model.addAttribute("title",title);
+        return "/back/newsManage";
     }
 }
