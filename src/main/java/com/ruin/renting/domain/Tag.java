@@ -22,7 +22,15 @@ public class Tag {
     private String name;
     private Integer num;
 
-    @JsonIgnore
+    public Tag(String name, Integer num) {
+        this.name = name;
+        this.num = num;
+    }
+
+    public Tag() {
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true, value = {"tags"})
     @ManyToMany(mappedBy = "tags")
     private Set<News> news=new HashSet<>();
 

@@ -15,6 +15,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Set;
@@ -85,5 +87,32 @@ public class NewsController {
         model.addAttribute("type","query");
         model.addAttribute("title",title);
         return "/back/newsManage";
+    }
+
+    @RequestMapping("/addNews")
+    public String addNews(String title, String content, MultipartFile file,String partition,String tags){
+
+        newsService.saveNews(title,content,file,partition,tags);
+        return "redirect:/back/newsManage";
+    }
+
+    @RequestMapping("/deleteNewsByID")
+    @ResponseBody
+    public Integer deleteNewsByID(Integer ID){
+        return newsService.deleteNews(ID);
+    }
+
+    @RequestMapping("/getNewsByID")
+    @ResponseBody
+    public News getNewsByID(Integer ID){
+        return newsService.findNewsByID(ID);
+    }
+
+    @RequestMapping("/updateNews")
+    public String updateNews(Integer id,String title,String content,
+                             MultipartFile file0,String partition,String tags){
+        newsService.updateNews(id,title,content,file0,partition,tags);
+
+        return "redirect:/back/newsManage";
     }
 }

@@ -12,4 +12,6 @@ public interface TagService {
     public List<Tag> findAllTags();
 
     public List<Tag> findRandomTags();
+
+    public Tag findTagByName(String name);
 }

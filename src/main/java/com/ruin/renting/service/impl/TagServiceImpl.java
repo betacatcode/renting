@@ -28,4 +28,9 @@ public class TagServiceImpl implements TagService {
     public List<Tag> findRandomTags() {
         return tagRepository.findRandomTags();
     }
+
+    @Override
+    public Tag findTagByName(String name) {
+        return tagRepository.findByName(name);
+    }
 }

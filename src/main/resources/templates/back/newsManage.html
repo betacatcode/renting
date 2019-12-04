@@ -254,7 +254,7 @@
 												<label class="col-sm-3 control-label no-padding-right" for="form-field-1">内容</label>
 
 												<div class="col-sm-8">
-													<textarea class="form-control" id="form-field-8" name="content" placeholder="内容"></textarea>
+													<textarea class="form-control" id="form-field-8" name="content" placeholder="内容" rows="15"></textarea>
 												</div>
 											</div>
 
@@ -274,10 +274,10 @@
 											</div>
 
 											<div class="form-group">
-												<label class="col-sm-3 control-label no-padding-right" for="form-field-tags">Tag input</label>
+												<label class="col-sm-3 control-label no-padding-right" for="form-field-tags">标签</label>
 
 												<div class="col-sm-9">
-													<input type="text" name="tags" id="form-field-tags"   style="display: none;">
+													<input type="text"  id="form-field-tags"   style="display: none;">
 												</div>
 											</div>
 
@@ -301,147 +301,86 @@
 								</div><!-- /.modal-content -->
 							</div><!-- /.modal-dialog -->
 						</div>
-						<!--<div id="update-table" class="modal fade" tabindex="-1">-->
-							<!--<div class="modal-dialog">-->
-								<!--<div class="modal-content">-->
-									<!--<div class="modal-header no-padding">-->
-										<!--<div class="table-header">-->
-											<!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">-->
-												<!--<span class="white">&times;</span>-->
-											<!--</button>-->
-											<!--修改一条记录-->
-										<!--</div>-->
-									<!--</div>-->
+						<div id="update-table" class="modal fade" tabindex="-1">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header no-padding">
+										<div class="table-header">
+											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+												<span class="white">&times;</span>
+											</button>
+											修改一条记录
+										</div>
+									</div>
 
-									<!--<div class="modal-body no-padding">-->
-										<!--<form id="updateForm" action="/updateNews" method="post" class="form-horizontal" role="form">-->
-											<!--<br>-->
-											<!--<div class="form-group">-->
-												<!--<label class="col-sm-3 control-label no-padding-right" for="updateID"> ID </label>-->
+									<div class="modal-body no-padding">
+										<form id="updateForm" action="/updateNews" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
+											<br>
+											<div class="form-group">
+												<label class="col-sm-3 control-label no-padding-right" for="updateID"> ID </label>
 
-												<!--<div class="col-sm-9">-->
-													<!--<input readonly="" type="text" class="col-xs-10 col-sm-5" id="updateID" name="id" />-->
-													<!--<span class="help-inline col-xs-12 col-sm-7"></span>-->
-												<!--</div>-->
-											<!--</div>-->
-											<!--<div class="form-group">-->
-												<!--<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 房间名 </label>-->
+												<div class="col-sm-9">
+													<input readonly="" type="text" class="col-xs-10 col-sm-5" id="updateID" name="id" />
+													<span class="help-inline col-xs-12 col-sm-7"></span>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 标题 </label>
 
-												<!--<div class="col-sm-9">-->
-													<!--<input type="text" name="name" id="updateName" placeholder="名字" class="col-xs-10 col-sm-5" />-->
-												<!--</div>-->
-											<!--</div>-->
+												<div class="col-sm-9">
+													<input type="text" name="title" id="updateTitle" placeholder="名字" class="col-xs-10 col-sm-8" />
+												</div>
+											</div>
 
-											<!--<div class="form-group">-->
-												<!--<label class="col-sm-3 control-label no-padding-right" for="form-field-1">简介</label>-->
+											<div class="form-group">
+												<label class="col-sm-3 control-label no-padding-right" for="form-field-1">内容</label>
 
-												<!--<div class="col-sm-8">-->
-													<!--<textarea class="form-control" id="updateProfile" name="profile" placeholder="简介"></textarea>-->
-												<!--</div>-->
-											<!--</div>-->
+												<div class="col-sm-8">
+													<textarea class="form-control" id="updateContent" name="content" placeholder="内容" rows="15" ></textarea>
+												</div>
+											</div>
 
-											<!--<div class="form-group">-->
-												<!--<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 户型 </label>-->
+											<div class="form-group">
+												<label class="col-sm-3 control-label no-padding-right" for="form-field-1">照片</label>
+												<div class="col-sm-3 control-label no-padding-right">
+													<img th:src="'/path/img/default.jpg'" id="img0" class="img-rounded" style="width: 200px">
+													<input type="file" name="file0" id="file0"/>
+												</div>
+											</div>
 
-												<!--<div class="col-sm-9">-->
-													<!--<input type="text" id="updateApartment" name="apartment" placeholder="户型" class="col-xs-10 col-sm-5" />-->
-												<!--</div>-->
-											<!--</div>-->
+											<div class="form-group">
+												<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 分区 </label>
 
-											<!--<div class="form-group">-->
-												<!--<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 房间大小 </label>-->
+												<div class="col-sm-6">
+													<select class="form-control" id="updatePartition" name="partition">
+														<option th:each="partition:${partitions}" th:value="${partition.name}">[[${partition.name}]]</option>
+													</select>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 标签 </label>
 
-												<!--<div class="col-sm-9">-->
-													<!--<input type="text" id="updateSize" name="size" placeholder="房间大小" class="col-xs-10 col-sm-5" />-->
-												<!--</div>-->
-											<!--</div>-->
+												<div class="col-sm-9">
+													<input type="text" name="tags" id="updateTags" placeholder="标签" class="col-xs-10 col-sm-8" />
+												</div>
+											</div>
 
-											<!--<div class="form-group">-->
-												<!--<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 地铁线 </label>-->
+											<br>
 
-												<!--<div class="col-sm-6">-->
-													<!--<select class="form-control" id="updateSubwayline" name="subwayline">-->
-														<!--<option value="1">1号线</option>-->
-														<!--<option value="2">2号线</option>-->
-														<!--<option value="3">3号线</option>-->
-													<!--</select>-->
-												<!--</div>-->
-											<!--</div>-->
+											<div class="clearfix form-actions">
+												<div class="col-md-offset-3 col-md-9">
+													<button class="btn btn-info" type="button" onclick=updateFormSubmit()>
+														<i class="ace-icon fa fa-check bigger-110"></i>
+														提交
+													</button>
+												</div>
+											</div>
+										</form>
+									</div>
 
-											<!--<div class="form-group">-->
-												<!--<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 朝向 </label>-->
-
-												<!--<div class="col-sm-2">-->
-													<!--<select class="form-control" id="updateOrientation" name="orientation">-->
-														<!--<option value="东">东</option>-->
-														<!--<option value="南">南</option>-->
-														<!--<option value="西">西</option>-->
-														<!--<option value="北">北</option>-->
-													<!--</select>-->
-												<!--</div>-->
-
-											<!--</div>-->
-
-											<!--<div class="form-group">-->
-												<!--<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 特点 </label>-->
-
-												<!--<div class="col-sm-6">-->
-													<!--<select class="form-control" id="updateItem" name="item">-->
-														<!--<option value="离地铁近">离地铁近</option>-->
-														<!--<option value="独立卫生间">独立卫生间</option>-->
-														<!--<option value="有阳台">有阳台</option>-->
-														<!--<option value="首次出租">首次出租</option>-->
-														<!--<option value="免物业费">免物业费</option>-->
-													<!--</select>-->
-												<!--</div>-->
-
-											<!--</div>-->
-
-											<!--<div class="form-group">-->
-												<!--<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 租期 </label>-->
-
-												<!--<div class="col-sm-6">-->
-													<!--<select class="form-control" id="updateTerm" name="term">-->
-														<!--<option value="月租">月租</option>-->
-														<!--<option value="年租">年租</option>-->
-													<!--</select>-->
-												<!--</div>-->
-											<!--</div>-->
-
-											<!--<div class="form-group">-->
-												<!--<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 出租方式 </label>-->
-
-												<!--<div class="col-sm-6">-->
-													<!--<select class="form-control" id="updateMode" name="mode">-->
-														<!--<option value="合租">合租</option>-->
-														<!--<option value="整租">整租</option>-->
-													<!--</select>-->
-												<!--</div>-->
-											<!--</div>-->
-
-											<!--<div class="form-group">-->
-												<!--<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 价格 </label>-->
-
-												<!--<div class="col-sm-9">-->
-													<!--<input type="text" id="updatePrice" name="price" placeholder="价格" class="col-xs-10 col-sm-5" />-->
-												<!--</div>-->
-											<!--</div>-->
-											<!--<br>-->
-
-											<!--<div class="clearfix form-actions">-->
-												<!--<div class="col-md-offset-3 col-md-9">-->
-													<!--<button class="btn btn-info" type="button" onclick=updateFormSubmit()>-->
-														<!--<i class="ace-icon fa fa-check bigger-110"></i>-->
-														<!--提交-->
-													<!--</button>-->
-												<!--</div>-->
-											<!--</div>-->
-										<!--</form>-->
-									<!--</div>-->
-
-								<!--</div>&lt;!&ndash; /.modal-content &ndash;&gt;-->
-							<!--</div>&lt;!&ndash; /.modal-dialog &ndash;&gt;-->
-						<!--</div>-->
+								</div><!-- /.modal-content -->
+							</div><!-- /.modal-dialog -->
+						</div>
 						<!-- PAGE CONTENT ENDS -->
 					</div><!-- /.col -->
 				</div><!-- /.row -->
@@ -722,6 +661,27 @@
 <!-- basic scripts -->
 <script type="text/javascript">
 
+    $("#file0").change(function(){
+        var objUrl = getObjectURL(this.files[0]) ;//获取文件信息
+        console.log("objUrl = "+objUrl);
+        if (objUrl) {
+            $("#img0").attr("src", objUrl);
+        }
+    }) ;
+
+    function getObjectURL(file) {
+        var url = null;
+        if (window.createObjectURL!=undefined) {
+            url = window.createObjectURL(file) ;
+        } else if (window.URL!=undefined) { // mozilla(firefox)
+            url = window.URL.createObjectURL(file) ;
+        } else if (window.webkitURL!=undefined) { // webkit or chrome
+            url = window.webkitURL.createObjectURL(file) ;
+        }
+        return url ;
+    }
+
+
 	$(window).load(function () {
         var tag_input = $('#form-field-tags');
         try{
@@ -763,8 +723,31 @@
     })
 
     function deleteByID(ID) {
+        if(confirm("确实要删除编号为"+ID+"的新闻吗?")){
+            $.ajax({
+                type:"POST",
+                url:"/deleteNewsByID",
+                data:"ID="+ID,
+                success:function (data) {
+                    if(data=="200"){
+                        $("#news"+ID).remove()
+                        alert("删除成功")
+                    }else
+                        alert("删除失败")
+                }
+            })
+        }
     }
 	function addFormSubmit() {
+	    var allTag=$("#add-table .tag")
+        var tags="";
+		for(var i=0;i<allTag.length;i++){
+	        tags+=allTag[i].innerText.split(/\s+/)[0];
+	        if(i!=allTag.length-1)
+	            tags+=";"
+		}
+		var tagInput=$('<input type="hidden" id="tagInput" name="tags" value='+tags+'></input>')
+		$("#addForm").append(tagInput)
 		$("#addForm").submit()
     }
 
@@ -775,28 +758,26 @@
 		$("#findForm").submit()
     }
     function getNewsByID(ID) {
-		console.log(ID)
 		$.ajax({
 			type:"POST",
 			url:"/getNewsByID",
 			data:"ID="+ID,
+			async:false,
 			success:function (data) {
 			    $("#updateID").val(data.id)
-				$("#updateName").val(data.name)
-				$("#updateProfile").val(data.profile)
-				$("#updateApartment").val(data.apartment)
-            	$("#updateSize").val(data.size)
-				$("#updateSubwayline").val(data.subwayline)
-				$("#updateOrientation").val(data.orientation)
-				$("#updateProfile").val(data.profile)
-				$("#updateTerm").val(data.term)
-				$("#updatePrice").val(data.price)
-				$("#updateMode").val(data.mode)
+				$("#updateTitle").val(data.title)
+				$("#updateContent").val(data.content)
+                $("#img0").attr("src",'/path/img/'+data.img)
+				$("#updatePartition").val(data.partition.name)
+				var t="";
+				for(var i=0;i<data.tags.length;i++){
+			        t+=data.tags[i].name;
+			        if(i!=data.tags.length-1)
+			            t+=" "
+				}
+				$("#updateTags").val(t)
 			}
 		})
-    }
-	function getTags() {
-
     }
     function getNewsImgByID(ID) {
         $("#updateImgNewsID").val(ID)

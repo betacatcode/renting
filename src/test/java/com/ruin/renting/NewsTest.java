@@ -38,7 +38,7 @@ public class NewsTest {
         News news=new News();
         news.setTitle("test");
         news.setContent("测试内容");
-        newsService.saveNews(news,null);
+//        newsService.saveNews(news,null);
     }
 
     @Test
@@ -60,7 +60,7 @@ public class NewsTest {
     public void updateNews(){
         News news=newsRepository.findById(1).get();
         news.setPubTime(new Date(System.currentTimeMillis()));
-        newsService.saveNews(news,null);
+//        newsService.saveNews(news,null);
     }
 
     @Test

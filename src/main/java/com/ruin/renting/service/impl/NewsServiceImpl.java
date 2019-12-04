@@ -8,6 +8,7 @@ import com.ruin.renting.domain.News;
 import com.ruin.renting.domain.Partition;
 import com.ruin.renting.domain.Tag;
 import com.ruin.renting.service.NewsService;
+import com.ruin.renting.utils.ImageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,9 +38,17 @@ public class NewsServiceImpl implements NewsService {
     @Autowired
     TagRepository tagRepository;
 
+    @Autowired
+    ImageUtil imageUtil;
+
     @Override
     public List<News> findAllNews() {
         return newsRepository.findAll();
+    }
+
+    @Override
+    public News findNewsByID(Integer ID) {
+        return newsRepository.findById(ID).get();
     }
 
     @Override
@@ -49,12 +58,12 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public Set<News> findNewsByPartition(String name) {
-        return partitionRepository.findPartitionByName(name).getNews();
+        return partitionRepository.findByName(name).getNews();
     }
 
     @Override
     public Set<News> findNewsByTag(String name) {
-        return tagRepository.findTagByName(name).getNews();
+        return tagRepository.findByName(name).getNews();
     }
 
     @Override
@@ -77,20 +86,50 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public void saveNews(News news, MultipartFile file) {
-        if(file==null)
-            news.setImg("default.jpg");
-
+    public void saveNews(String title, String content, MultipartFile file,String partition,String tags) {
+        News news=new News();
+        news.setTitle(title);
+        news.setContent(content);
         news.setCommentNum(0);
         news.setPubTime(new Date(System.currentTimeMillis()));
-        System.out.println(news);
+        news.setPartition(partitionRepository.findByName(partition));
+
+        String []allTag=tags.split(";");
+        for(int i=0;i<allTag.length;i++){
+            Tag findTag=tagRepository.findByName(allTag[i]);
+            if(findTag==null){
+                Tag tag=new Tag();
+                tag.setName(allTag[i]);
+                tag.setNum(0);
+                tagRepository.save(tag);
+
+                Tag newTag=tagRepository.findByName(allTag[i]);
+                newTag.getNews().add(news);
+                news.getTags().add(newTag);
+            }else {
+                findTag.getNews().add(news);
+                news.getTags().add(findTag);
+            }
+        }
+        newsRepository.save(news);
+
+//        设置图片
+        News thisNews=newsRepository.findByTitle(title);
+        if(file.getOriginalFilename().equals("")){
+            thisNews.setImg("default.jpg");
+        }else {
+            String imgName = imageUtil.saveNewsImage(file, thisNews.getId());
+            thisNews.setImg(imgName);
+        }
         newsRepository.save(news);
     }
 
     @Override
-    public void deleteNews(Integer id) {
+    public Integer deleteNews(Integer id) {
         News news=newsRepository.findById(id).get();
         newsRepository.delete(news);
+        imageUtil.deleteFile("D:\\house\\img\\"+news.getImg());
+        return 200;
     }
 
     @Override
@@ -99,8 +138,36 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public void updateNews(News news, MultipartFile file) {
+    public void updateNews(Integer id,String title,String content,
+                           MultipartFile file0,String partition,String tags) {
+        News news=newsRepository.findById(id).get();
+        news.setTitle(title);
+        news.setContent(content);
+        Partition p=partitionRepository.findByName(partition);
+        news.setPartition(p);
+
+
+        if(content.trim().equals("")) {
+            news.getTags().clear();
+        }else{
+            String allTag[]=tags.split("\\s+");
+            news.getTags().clear();
+            for(int i=0;i<allTag.length;i++){
+                Tag tag=tagRepository.findByName(allTag[i]);
+//            如果是新的标签
+                if(tag==null){
+                    tag=new Tag(allTag[i],0);
+                    tagRepository.save(tag);
+                }
+                news.getTags().add(tag);
+            }
+        }
+        if(file0.getOriginalFilename().equals("")){
+            news.setImg("default.jpg");
+        }else
+            imageUtil.saveNewsImage(file0,news.getId());
         newsRepository.save(news);
+
     }
 
 }

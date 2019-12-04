@@ -1,5 +1,7 @@
 package com.ruin.renting.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.List;
@@ -20,6 +22,7 @@ public class Partition {
     private Integer num;
 
     @OneToMany(mappedBy = "partition")
+    @JsonIgnoreProperties(ignoreUnknown = true, value = {"partition"})
     private Set<News> news=new HashSet<>();
 
     public Integer getId() {

@@ -17,6 +17,8 @@ public interface NewsService {
 
     public List<News> findAllNews();
 
+    public News findNewsByID(Integer ID);
+
     public Page<News> findAllNews(Pageable pageable);
 
     public Set<News> findNewsByPartition(String name);
@@ -29,12 +31,13 @@ public interface NewsService {
 
     public List<News> findRandomNews();
 
-    public void saveNews(News news, MultipartFile file);
+    public void saveNews(String title, String content, MultipartFile file,String partition,String tags);
 
-    public void deleteNews(Integer id);
+    public Integer deleteNews(Integer id);
 
     public Page<News> findByTitleLike(String name,Pageable pageable);
 
-    public void updateNews(News news,MultipartFile file);
+    public void updateNews(Integer id,String title,String content,
+                           MultipartFile file0,String partition,String tags);
 
 }

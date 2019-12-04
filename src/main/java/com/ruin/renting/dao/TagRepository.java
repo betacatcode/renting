@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface TagRepository extends JpaRepository<Tag,Integer>{
 
-    public Tag findTagByName(String name);
+    public Tag findByName(String name);
 
     @Query(value = "select * from tb_tag order by rand() limit 3",nativeQuery = true)
     public List<Tag> findRandomTags();

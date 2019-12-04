@@ -1,5 +1,7 @@
 package com.ruin.renting.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -25,9 +27,11 @@ public class News {
     private String img;
     private Integer commentNum;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "news",cascade= CascadeType.ALL)
     private Set<Comment> commentList=new HashSet<>();
 
+    @JsonIgnoreProperties(ignoreUnknown = true, value = {"news"})
     @ManyToMany(targetEntity = Tag.class)
     @JoinTable(name = "tb_tag_news",
         joinColumns={@JoinColumn(name = "news_id",referencedColumnName = "id")},

@@ -23,5 +23,10 @@ public class PartitionServiceImpl implements PartitionService {
         return partitionRepository.findAll();
     }
 
+    @Override
+    public Partition findPartitionByName(String name) {
+        return partitionRepository.findByName(name);
+    }
+
 
 }
