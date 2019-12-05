@@ -1,5 +1,6 @@
 package com.ruin.renting.utils;
 
+import com.ruin.renting.config.Data;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,7 +17,7 @@ public class VideoUtil extends FileUtil{
         String[]videoNames=video.getOriginalFilename().split("\\.");
         String videoName=houseName+"."+videoNames[1];
 
-        String path="D:\\house\\video\\";
+        String path= Data.path+"video\\";
         File file=new File(path);
         String  pathFile = path + File.separator + videoName.toLowerCase();
         File newFile=new File(pathFile);

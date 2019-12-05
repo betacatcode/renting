@@ -1,5 +1,6 @@
 package com.ruin.renting.utils;
 
+import com.ruin.renting.config.Data;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,7 +17,7 @@ public class ImageUtil extends FileUtil{
     public String saveHouseImage(MultipartFile img, String houseName,int num){
         String imgName=houseName+"_"+num+".jpg";
 
-        String path="D:\\house\\img\\";
+        String path= Data.path+"img\\";
         File file=new File(path);
         String  pathFile = path + File.separator + imgName.toLowerCase();
         File newFile=new File(pathFile);
@@ -28,7 +29,7 @@ public class ImageUtil extends FileUtil{
     public String saveNewsImage(MultipartFile img,Integer id){
         String imgName="news_"+id+".jpg";
 
-        String path="D:\\house\\img\\";
+        String path=Data.path+"img\\";
         File file=new File(path);
         String  pathFile = path + File.separator + imgName.toLowerCase();
         File newFile=new File(pathFile);

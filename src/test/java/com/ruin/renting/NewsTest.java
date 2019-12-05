@@ -41,10 +41,6 @@ public class NewsTest {
 //        newsService.saveNews(news,null);
     }
 
-    @Test
-    public void deleteNews(){
-        newsService.deleteNews(8);
-    }
 
 
     @Test

@@ -1,5 +1,6 @@
 package com.ruin.renting.service.impl;
 
+import com.ruin.renting.config.Data;
 import com.ruin.renting.dao.HouseImgRepository;
 import com.ruin.renting.dao.HouseRepository;
 import com.ruin.renting.domain.House;
@@ -125,7 +126,7 @@ public class HouseServiceImpl implements HouseService {
         List<HouseImg>houseImgs=new ArrayList<HouseImg>(house.getHouseImgList());
 
         houseRepository.deleteById(id);
-        String imgPath="D:\\house\\img\\";
+        String imgPath= Data.path+"img\\";
         for(int i=0;i<=3;i++){
             HouseImg houseImg=houseImgs.get(i);
             String houseImgName=houseImg.getName();
@@ -134,7 +135,7 @@ public class HouseServiceImpl implements HouseService {
                 imageUtil.deleteFile(pathFile);
         }
 
-        String videoPath="D:\\house\\video\\";
+        String videoPath=Data.path+"video\\";
         String videoName=house.getVideo();
         String  pathFile = videoPath + File.separator + videoName;
         if(!videoName.equals("no"))

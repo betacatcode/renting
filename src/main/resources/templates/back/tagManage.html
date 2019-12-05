@@ -3,7 +3,7 @@
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<meta charset="utf-8" />
-	<title>新闻管理</title>
+	<title>房屋信息管理</title>
 
 	<meta name="description" content="Static &amp; Dynamic Tables" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
@@ -65,7 +65,7 @@
 						<i class="ace-icon fa fa-home home-icon"></i>
 						<a href="/back/index">后台主页</a>
 					</li>
-					<li class="active">新闻信息管理</li>
+					<li class="active">房屋信息管理</li>
 				</ul><!-- /.breadcrumb -->
 			</div>
 
@@ -76,7 +76,7 @@
 						信息管理
 						<small>
 							<i class="ace-icon fa fa-angle-double-right"></i>
-							新闻信息管理
+							标签信息管理
 						</small>
 					</h1>
 				</div><!-- /.page-header -->
@@ -85,20 +85,19 @@
 					<div class="col-xs-12">
 						<!-- PAGE CONTENT BEGINS -->
 						<div class="row">
-							<div class="col-xs-4">
-								<a href="#add-table" onclick="getTags()" role="button" class="btn btn-sm btn-success" data-toggle="modal">
+							<div class="col-xs-4 col-xs-offset-3">
+								<a href="#add-table" role="button" class="btn btn-sm btn-success" data-toggle="modal">
 									<i class="ace-icon fa  fa-pencil-square-o  bigger-230"></i>
 									新增记录
 								</a>
 							</div>
-							<div class="col-xs-6"></div>
 							<div class="col-xs-2">
 								<div class="input-group">
 									<span class="input-group-addon">
 										<i class="ace-icon fa fa-check"></i>
 									</span>
-									<form id="findForm" action="/back/findByNewsTitleLike" method="post">
-										<input type="text" class="form-control search-query" name="title" placeholder="按标题模糊搜索">
+									<form id="findForm" action="/back/findTagNameLike" method="post">
+										<input type="text" class="form-control search-query" name="name" placeholder="按标签名模糊搜索">
 									</form>
 									<span class="input-group-btn">
 										<button type="button" class="btn btn-inverse btn-white" onclick="findFromSubmit()">
@@ -110,41 +109,35 @@
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-xs-12">
+							<div class="col-xs-6 col-xs-offset-3">
 								<table id="simple-table" class="table  table-bordered table-hover">
 									<thead>
 									<tr>
 
 										<th>ID</th>
-										<th>标题</th>
-										<th>内容</th>
-										<th>发布时间</th>
-										<th>图片</th>
-										<th>标签</th>
-										<th>分区</th>
+										<th>名字</th>
+										<th>数量</th>
 										<th class="hidden-480">操作</th>
+
 									</tr>
 									</thead>
 
 									<tbody>
-									<tr th:each="news:${newses.content}" th:id="'news'+${news.id}">
+									<tr th:each="tag:${tags.content}" th:id="'tag'+${tag.id}">
+
 
 										<td>
-											[[${news.id}]]
+											[[${tag.id}]]
 										</td>
-										<td>[[${news.title}]]</td>
-										<td th:text="${#strings.abbreviate(news.content,50)}"></td>
-										<td>[[${news.pubTime}]]</td>
-										<td><img th:src="'/path/img/'+${news.img}" alt="" style="width: 80px"></td>
-										<td><p th:each="tag:${news.tags}">[[${tag.name}]]</p></td>
-										<td>[[${news.partition.name}]]</td>
+										<td>[[${tag.name}]]</td>
+										<td>[[${tag.num}]]</td>
 
 										<td>
 											<div class="hidden-sm hidden-xs btn-group">
-												<button href="#update-table" class="btn btn-xs btn-info"  data-toggle="modal" th:onclick="|getNewsByID(${news.id})|">
+												<button href="#update-table" class="btn btn-xs btn-info"  data-toggle="modal" th:onclick="|getTagByID(${tag.id})|">
 													<i class="ace-icon fa fa-pencil bigger-120"></i>
 												</button>
-												<button class="btn btn-xs btn-danger" th:onclick="|deleteByID(${news.id})|">
+												<button class="btn btn-xs btn-danger" th:onclick="|deleteTagByID(${tag.id})|">
 													<i class="ace-icon fa fa-trash-o bigger-120"></i>
 												</button>
 											</div>
@@ -191,17 +184,16 @@
 							</div><!-- /.span -->
 						</div><!-- /.row -->
 
-						<!--显示的分页-->
 						<div class="row" th:if="${type}=='show'">
 							<div class="col-xs-6 col-xs-offset-5">
 								<div>
 									<ul class="pagination">
-										<div class="pagination" th:if="${newses.totalPages!=0}" th:each="n:${#numbers.sequence(1,newses.totalPages)}" style="margin: 20px -1px;">
-											<li th:if="${newses.number}==${n}-1" class="active">
-												<a th:href="@{/back/newsManage(pageNum=${n}-1)}">[[${n}]]</a>
+										<div class="pagination" th:if="${tags.totalPages!=0}" th:each="n:${#numbers.sequence(1,tags.totalPages)}" style="margin: 20px -1px;">
+											<li th:if="${tags.number}==${n}-1" class="active">
+												<a th:href="@{/back/tagManage(pageNum=${n}-1)}">[[${n}]]</a>
 											</li>
-											<li th:if="${newses.number}!=${n}-1">
-												<a th:href="@{/back/newsManage(pageNum=${n}-1)}">[[${n}]]</a>
+											<li th:if="${tags.number}!=${n}-1">
+												<a th:href="@{/back/tagManage(pageNum=${n}-1)}">[[${n}]]</a>
 											</li>
 										</div>
 									</ul>
@@ -213,12 +205,12 @@
 							<div class="col-xs-6 col-xs-offset-5">
 								<div>
 									<ul class="pagination">
-										<div class="pagination" th:if="${newses.totalPages!=0}" th:each="n:${#numbers.sequence(1,newses.totalPages)}" style="margin: 20px -1px;">
-											<li th:if="${newses.number}==${n}-1" class="active">
-												<a th:href="@{/back/findByNewsTitleLike(pageNum=${n}-1,title=${title})}">[[${n}]]</a>
+										<div class="pagination" th:if="${tags.totalPages!=0}" th:each="n:${#numbers.sequence(1,tags.totalPages)}" style="margin: 20px -1px;">
+											<li th:if="${tags.number}==${n}-1" class="active">
+												<a th:href="@{/back/findTagNameLike(pageNum=${n}-1,name=${name})}">[[${n}]]</a>
 											</li>
-											<li th:if="${newses.number}!=${n}-1">
-												<a th:href="@{/back/findByNewsTitleLike(pageNum=${n}-1,title=${title})}">[[${n}]]</a>
+											<li th:if="${tags.number}!=${n}-1">
+												<a th:href="@{/back/findTagNameLike(pageNum=${n}-1,name=${name})}">[[${n}]]</a>
 											</li>
 										</div>
 									</ul>
@@ -239,45 +231,14 @@
 									</div>
 
 									<div class="modal-body no-padding">
-										<form id="addForm" action="/addNews" method="post" class="form-horizontal" role="form" enctype="multipart/form-data">
+										<form id="addForm" action="/addTag" method="post" class="form-horizontal" role="form">
 											<br>
 
 											<div class="form-group">
-												<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 标题 </label>
+												<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 标签名 </label>
 
 												<div class="col-sm-9">
-													<input type="text" id="form-field-1" name="title" placeholder="标题" class="col-xs-10 col-sm-5" />
-												</div>
-											</div>
-
-											<div class="form-group">
-												<label class="col-sm-3 control-label no-padding-right" for="form-field-1">内容</label>
-
-												<div class="col-sm-8">
-													<textarea class="form-control" id="form-field-8" name="content" placeholder="内容" rows="15"></textarea>
-												</div>
-											</div>
-
-											<div class="form-group">
-												<label  class="col-sm-3 control-label no-padding-right">选择图片</label>
-												<input type="file" name="file"  class="col-xs-10 col-sm-5"/>
-											</div>
-
-											<div class="form-group">
-												<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 分区 </label>
-
-												<div class="col-sm-6">
-													<select class="form-control" id="form-field-select-1" name="partition">
-														<option th:each="partition:${partitions}" th:value="${partition.name}">[[${partition.name}]]</option>
-													</select>
-												</div>
-											</div>
-
-											<div class="form-group">
-												<label class="col-sm-3 control-label no-padding-right" for="form-field-tags">标签</label>
-
-												<div class="col-sm-9">
-													<input type="text"  id="form-field-tags"   style="display: none;">
+													<input type="text" id="form-field-1" name="name" placeholder="名字" class="col-xs-10 col-sm-5" />
 												</div>
 											</div>
 
@@ -314,7 +275,7 @@
 									</div>
 
 									<div class="modal-body no-padding">
-										<form id="updateForm" action="/updateNews" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
+										<form id="updateForm" action="/updateTag" method="post" class="form-horizontal" role="form">
 											<br>
 											<div class="form-group">
 												<label class="col-sm-3 control-label no-padding-right" for="updateID"> ID </label>
@@ -325,43 +286,10 @@
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 标题 </label>
+												<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 房间名 </label>
 
 												<div class="col-sm-9">
-													<input type="text" name="title" id="updateTitle" placeholder="名字" class="col-xs-10 col-sm-8" />
-												</div>
-											</div>
-
-											<div class="form-group">
-												<label class="col-sm-3 control-label no-padding-right" for="form-field-1">内容</label>
-
-												<div class="col-sm-8">
-													<textarea class="form-control" id="updateContent" name="content" placeholder="内容" rows="15" ></textarea>
-												</div>
-											</div>
-
-											<div class="form-group">
-												<label class="col-sm-3 control-label no-padding-right" for="form-field-1">照片</label>
-												<div class="col-sm-3 control-label no-padding-right">
-													<img th:src="'/path/img/default.jpg'" id="img0" class="img-rounded" style="width: 200px">
-													<input type="file" name="file0" id="file0"/>
-												</div>
-											</div>
-
-											<div class="form-group">
-												<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 分区 </label>
-
-												<div class="col-sm-6">
-													<select class="form-control" id="updatePartition" name="partition">
-														<option th:each="partition:${partitions}" th:value="${partition.name}">[[${partition.name}]]</option>
-													</select>
-												</div>
-											</div>
-											<div class="form-group">
-												<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 标签 </label>
-
-												<div class="col-sm-9">
-													<input type="text" name="tags" id="updateTags" placeholder="标签" class="col-xs-10 col-sm-8" />
+													<input type="text" name="name" id="updateName" placeholder="名字" class="col-xs-10 col-sm-5" />
 												</div>
 											</div>
 
@@ -416,7 +344,6 @@
 <script src="assets/js/buttons.print.min.js"></script>
 <script src="assets/js/buttons.colVis.min.js"></script>
 <script src="assets/js/dataTables.select.min.js"></script>
-<script src="assets/js/bootstrap-tag.min.js"></script>
 
 <!-- ace scripts -->
 <script src="assets/js/ace-elements.min.js"></script>
@@ -660,94 +587,38 @@
 
 <!-- basic scripts -->
 <script type="text/javascript">
-
-    $("#file0").change(function(){
-        var objUrl = getObjectURL(this.files[0]) ;//获取文件信息
-        console.log("objUrl = "+objUrl);
-        if (objUrl) {
-            $("#img0").attr("src", objUrl);
-        }
-    }) ;
-
-    function getObjectURL(file) {
-        var url = null;
-        if (window.createObjectURL!=undefined) {
-            url = window.createObjectURL(file) ;
-        } else if (window.URL!=undefined) { // mozilla(firefox)
-            url = window.URL.createObjectURL(file) ;
-        } else if (window.webkitURL!=undefined) { // webkit or chrome
-            url = window.webkitURL.createObjectURL(file) ;
-        }
-        return url ;
-    }
-
-
-	$(window).load(function () {
-        var tag_input = $('#form-field-tags');
-        try{
-            tag_input.tag(
-                {
-                    placeholder:tag_input.attr('placeholder'),
-                    //enable typeahead by specifying the source array
-                    source: ace.vars['US_STATES'],//defined in ace.js >> ace.enable_search_ahead
-                    /**
-                     //or fetch data from database, fetch those that match "query"
-                     source: function(query, process) {
-					  $.ajax({url: 'remote_source.php?q='+encodeURIComponent(query)})
-					  .done(function(result_items){
-						process(result_items);
-					  });
-					}
-                     */
-                }
-            )
-
-            var $tag_obj = $('#form-field-tags').data('tag');
+    function deleteTagByID(ID) {
+        if(confirm("确实要删除编号为"+ID+"的标签吗?")){
             $.ajax({
                 type:"POST",
-                url:"/back/getRandomTags",
-                success:function (data) {
-                    for(var i=0;i<3;i++)
-                        $tag_obj.add(data[i].name);
-                }
-            })
-
-            var index = $tag_obj.inValues('some tag');
-            $tag_obj.remove(index);
-        }
-        catch(e) {
-            //display a textarea for old IE, because it doesn't support this plugin or another one I tried!
-            tag_input.after('<textarea id="' + tag_input.attr('id') + '" name="' + tag_input.attr('name') + '" rows="3">' + tag_input.val() + '</textarea>').remove();
-            //autosize($('#form-field-tags'));
-        }
-    })
-
-    function deleteByID(ID) {
-        if(confirm("确实要删除编号为"+ID+"的新闻吗?")){
-            $.ajax({
-                type:"POST",
-                url:"/deleteNewsByID",
+                url:"/deleteTagByID",
                 data:"ID="+ID,
                 success:function (data) {
                     if(data=="200"){
-                        $("#news"+ID).remove()
+                        $("#tag"+ID).remove()
                         alert("删除成功")
-                    }else
-                        alert("删除失败")
+					}else
+                    	alert("删除失败")
                 }
             })
-        }
-    }
-	function addFormSubmit() {
-	    var allTag=$("#add-table .tag")
-        var tags="";
-		for(var i=0;i<allTag.length;i++){
-	        tags+=allTag[i].innerText.split(/\s+/)[0];
-	        if(i!=allTag.length-1)
-	            tags+=";"
 		}
-		var tagInput=$('<input type="hidden" id="tagInput" name="tags" value='+tags+'></input>')
-		$("#addForm").append(tagInput)
+
+    }
+
+    function getTagByID(ID) {
+        $.ajax({
+            type:"POST",
+            url:"/getTagByID",
+            data:"ID="+ID,
+            async:false,
+            success:function (data) {
+                $("#updateID").val(data.id)
+                $("#updateName").val(data.name)
+            }
+        })
+    }
+
+	function addFormSubmit() {
 		$("#addForm").submit()
     }
 
@@ -756,42 +627,6 @@
     }
     function findFromSubmit() {
 		$("#findForm").submit()
-    }
-    function getNewsByID(ID) {
-		$.ajax({
-			type:"POST",
-			url:"/getNewsByID",
-			data:"ID="+ID,
-			async:false,
-			success:function (data) {
-			    $("#updateID").val(data.id)
-				$("#updateTitle").val(data.title)
-				$("#updateContent").val(data.content)
-                $("#img0").attr("src",'/path/img/'+data.img)
-				$("#updatePartition").val(data.partition.name)
-				var t="";
-				for(var i=0;i<data.tags.length;i++){
-			        t+=data.tags[i].name;
-			        if(i!=data.tags.length-1)
-			            t+=" "
-				}
-				$("#updateTags").val(t)
-			}
-		})
-    }
-    function getNewsImgByID(ID) {
-        $("#updateImgNewsID").val(ID)
-        $.ajax({
-			type:"GET",
-			url:"/getNewsImgByID",
-			data:"ID="+ID,
-			success:function (data) {
-				for(var i=0;i<=3;i++){
-				    var imgPath='/path/img/'+data[i].name;
-				    $("#img"+i).attr("src",imgPath)
-				}
-            }
-		})
     }
 
 

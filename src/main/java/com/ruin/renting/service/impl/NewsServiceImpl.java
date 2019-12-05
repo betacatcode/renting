@@ -1,5 +1,6 @@
 package com.ruin.renting.service.impl;
 
+import com.ruin.renting.config.Data;
 import com.ruin.renting.dao.HouseRepository;
 import com.ruin.renting.dao.NewsRepository;
 import com.ruin.renting.dao.PartitionRepository;
@@ -128,7 +129,7 @@ public class NewsServiceImpl implements NewsService {
     public Integer deleteNews(Integer id) {
         News news=newsRepository.findById(id).get();
         newsRepository.delete(news);
-        imageUtil.deleteFile("D:\\house\\img\\"+news.getImg());
+        imageUtil.deleteFile(Data.path+"img\\"+news.getImg());
         return 200;
     }
 

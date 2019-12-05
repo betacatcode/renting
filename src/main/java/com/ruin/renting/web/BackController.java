@@ -24,7 +24,7 @@ import java.util.List;
  */
 
 @Controller
-@RequestMapping("back")
+@RequestMapping("/back")
 public class BackController {
 
     @Autowired
@@ -63,5 +63,14 @@ public class BackController {
         return "/back/newsManage";
     }
 
+    @RequestMapping("/tagManage")
+    public String goTags(Model model,@RequestParam(defaultValue = "0")int pageNum){
+
+        tagService.labelStatistics();
+        Page<Tag> tags=tagService.findAllTags(PageRequest.of(pageNum,10));
+        model.addAttribute("tags",tags);
+        model.addAttribute("type","show");
+        return "/back/tagManage";
+    }
 
 }
