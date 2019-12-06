@@ -14,18 +14,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  * @author ruin
  * @date 2019/10/27-16:25
  */
-//@Configuration
+@Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     UserDetailsService customUserService(){
         return new CustomUserService();
-    }
-
-    @Override
-    public void configure(WebSecurity web){
-        //解决静态资源被拦截的问题
-        web.ignoring().antMatchers("/css/**");
     }
 
     @Override
@@ -36,14 +30,30 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http.authorizeRequests()
-//                        .anyRequest().authenticated()
-//                        .and()
-//                        .formLogin()
-//                            .loginPage("/login")
-//                            .failureUrl("/login?error")
-//                            .permitAll()
-//                        .and()
-//                        .logout().permitAll();
+        http.authorizeRequests()
+//                .antMatchers("/",
+//                        "/jquery/**",
+//                        "/semantic/**",
+//                        "/css/**",
+//                        "/js/**",
+//                        "/images/**",
+//                        "/fonts/**",
+//                        "/**/favicon.ico",
+//                        "/**").permitAll()
+//
+            .anyRequest()
+//                .authenticated()
+//            .and()
+//
+//            .formLogin()
+//                .loginPage("/back/login")
+//                .loginProcessingUrl("/doLogin")
+//                .failureUrl("/back/login")
+//                .defaultSuccessUrl("/index")
+//                .permitAll()
+//
+//            .and()
+//            .logout()
+                .permitAll();
     }
 }

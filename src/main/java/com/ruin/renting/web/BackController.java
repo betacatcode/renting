@@ -44,6 +44,10 @@ public class BackController {
         return "/back/index";
     }
 
+    @RequestMapping("/login")
+    public String goLogin(){
+        return "/back/login";
+    }
     @RequestMapping("/houseManage")
     public String goHouse(Model model,@RequestParam(defaultValue = "0")int pageNum) {
         Page<House> data=houseService.findAllHouses(PageRequest.of(pageNum,10));

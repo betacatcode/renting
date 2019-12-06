@@ -75,19 +75,7 @@ public class HouseServiceImpl implements HouseService {
 
     @Override
     public SysUser findOwner(House house) {
-        Set<SysUser> users=house.getUsers();
-        SysUser owner = null;
-        if(users!=null&&users.size()>0) {
-            owner=users.iterator().next();
-        }
-
-        for(SysUser user:users){
-            if(user.getRoles().equals("ROLE_OWNER")){
-                owner=user;
-                break;
-            }
-        }
-        return owner;
+       return house.getOwner();
     }
 
     @Override

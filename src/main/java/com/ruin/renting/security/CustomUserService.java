@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
  * @author ruin
  * @date 2019/10/27-16:07
  */
-
+//检验用户名是否存在
 public class CustomUserService implements UserDetailsService {
     @Autowired
     SysUserRepository userRepository;

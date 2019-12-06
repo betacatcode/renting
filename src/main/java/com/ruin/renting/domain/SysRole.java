@@ -18,7 +18,7 @@ public class SysRole {
     private Integer id;
     private String name;
 
-    @ManyToMany(mappedBy = "houses")
+    @ManyToMany(mappedBy = "roles")
     private Set<SysUser> users=new HashSet<>();
 
     public Integer getId() {

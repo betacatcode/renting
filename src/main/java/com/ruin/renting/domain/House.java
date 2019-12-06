@@ -38,8 +38,12 @@ public class House {
     private Set<HouseImg> houseImgList=new HashSet<>();
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "houses")
-    private Set<SysUser> users=new HashSet<>();
+    @ManyToMany(mappedBy = "collectHouses")
+    private Set<SysUser> collectUsers=new HashSet<>();
+
+    @ManyToOne(targetEntity = SysUser.class)
+    @JoinColumn(name="owner_id",referencedColumnName = "id")
+    private SysUser owner;
 
     public Integer getId() {
         return id;
@@ -146,12 +150,20 @@ public class House {
         this.item = item;
     }
 
-    public Set<SysUser> getUsers() {
-        return users;
+    public SysUser getOwner() {
+        return owner;
     }
 
-    public void setUsers(Set<SysUser> users) {
-        this.users = users;
+    public void setOwner(SysUser owner) {
+        this.owner = owner;
+    }
+
+    public Set<SysUser> getCollectUsers() {
+        return collectUsers;
+    }
+
+    public void setCollectUsers(Set<SysUser> collectUsers) {
+        this.collectUsers = collectUsers;
     }
 
     @Override
@@ -170,7 +182,7 @@ public class House {
                 ", term='" + term + '\'' +
                 ", price=" + price +
                 ", houseImgList=" + houseImgList +
-                ", users=" + users +
+                ", users=" + collectUsers +
                 '}';
     }
 }

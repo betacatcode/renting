@@ -10,9 +10,9 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
  * @date 2019/10/31-14:23
  */
 
-@EnableAutoConfiguration(exclude = {
-        SecurityAutoConfiguration.class
-})
+//@EnableAutoConfiguration(exclude = {
+//        SecurityAutoConfiguration.class
+//})
 @SpringBootApplication
 public class Renting {
 

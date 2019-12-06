@@ -31,11 +31,16 @@ public class SysUser implements UserDetails {
         inverseJoinColumns = {@JoinColumn(name = "roles_id",referencedColumnName = "id")})
     private Set<SysRole> roles=new HashSet<>();
 
+//    用户收藏的房子 多对多的关系 用户可以收藏多个房子 每个房子也能被多个用户收藏
     @ManyToMany(targetEntity =House.class)
-    @JoinTable(name= "tb_sys_user_houses",
+    @JoinTable(name= "tb_sys_user_collect_houses",
         joinColumns = {@JoinColumn(name="users_id",referencedColumnName = "id")},
         inverseJoinColumns = {@JoinColumn(name="houses_id",referencedColumnName = "id")})
-    private Set<House> houses=new HashSet<>();
+    private Set<House> collectHouses=new HashSet<>();
+
+//    用户拥有的房子 一对多的关系 并且支持级联操作
+    @OneToMany(mappedBy = "owner",cascade = CascadeType.ALL)
+    private Set<House> ownHouses=new HashSet<>();
 
     @OneToMany(mappedBy = "user",cascade= CascadeType.ALL)
     private Set<Comment> commentList=new HashSet<>();
@@ -137,12 +142,20 @@ public class SysUser implements UserDetails {
         this.roles = roles;
     }
 
-    public Set<House> getHouses() {
-        return houses;
+    public Set<House> getCollectHouses() {
+        return collectHouses;
     }
 
-    public void setHouses(Set<House> houses) {
-        this.houses = houses;
+    public void setCollectHouses(Set<House> collectHouses) {
+        this.collectHouses = collectHouses;
+    }
+
+    public Set<House> getOwnHouses() {
+        return ownHouses;
+    }
+
+    public void setOwnHouses(Set<House> ownHouses) {
+        this.ownHouses = ownHouses;
     }
 
     public Set<Comment> getCommentList() {
