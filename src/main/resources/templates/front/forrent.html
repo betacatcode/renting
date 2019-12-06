@@ -99,7 +99,7 @@
 								<div class="search1">
 									<div class="yourplace" style="margin-bottom: 20px">
 										<h5>地铁线</h5>
-										<select class="sel" name="subwayline">
+										<select class="sel" name="subwayline" id="subwayline">
 											<option value="unlimited">不限</option>
 											<option value="1">1号线</option>
 											<option value="2">2号线</option>
@@ -108,7 +108,7 @@
 									</div>
 									<div class="yourplace" style="margin-bottom: 20px">
 										<h5>出租方式</h5>
-										<select class="sel" name="mode">
+										<select class="sel" name="mode" id="mode">
 											<option value="unlimited">不限</option>
 											<option value="整租">整租</option>
 											<option value="合租">合租</option>
@@ -116,7 +116,7 @@
 									</div>
 									<div class="yourplace" style="margin-bottom: 20px">
 										<h5>朝向</h5>
-										<select class="sel" name="orientation">
+										<select class="sel" name="orientation" id="orientation">
 											<option value="unlimited">不限</option>
 											<option value="南">南</option>
 											<option value="北</">北</option>
@@ -127,7 +127,7 @@
 									</div>
 									<div class="yourplace" style="margin-bottom: 20px">
 										<h5>特色</h5>
-										<select class="sel" name="item">
+										<select class="sel" name="item" id="item">
 											<option value="unlimited">无要求</option>
 											<option value="独立卫生间">独立卫生间</option>
 											<option value="有阳台">有阳台</option>
@@ -138,7 +138,7 @@
 									</div>
 									<div class="yourplace" style="margin-bottom: 20px">
 										<h5>租期</h5>
-										<select class="sel" name="term">
+										<select class="sel" name="term" id="term">
 											<option value="unlimited">不限</option>
 											<option value="月租">月租</option>
 											<option value="年租">年租</option>
@@ -147,7 +147,7 @@
 									<div class="yourplace-grids1" style="margin-bottom: 20px">
 										<div class="col-md-6 yourplace-grid">
 											<h5>最低价格</h5>
-											<select class="sel" name="minPrice">
+											<select class="sel" name="minPrice" id="minPrice">
 												<option value="0">0</option>
 												<option value="500">500</option>
 												<option value="1000">1000</option>
@@ -159,7 +159,7 @@
 										</div>
 										<div class="col-md-6 yourplace-grid">
 											<h5>最高价格</h5>
-											<select class="sel" name="maxPrice">
+											<select class="sel" name="maxPrice" id="maxPrice">
 												<option value="99999">10000+</option>
 												<option value="10000">10000</option>
 												<option value="5000">5000</option>
@@ -187,32 +187,32 @@
 		<div class="col-md-6 col-md-offset-3">
 			<ul class="pagination pagination-lg">
 
-				<!--前一页-->
-				<li><a th:if="${currentPage}==0" th:href="@{/forrent(pageNum=0,subwayline=${subwayline},mode=${mode},
-				orientation=${orientation},item=${item},term=${term},minPrice=${minPrice},maxPrice=${maxPrice})}"><i class="fa fa-angle-left">«</i></a></li>
-				<li><a th:if="${currentPage}!=0" th:href="@{/forrent(pageNum=${currentPage}-1,subwayline=${subwayline},mode=${mode},
-				orientation=${orientation},item=${item},term=${term},minPrice=${minPrice},maxPrice=${maxPrice})}"><i class="fa fa-angle-left">«</i></a></li>
 				<div th:if="${totalPages!=0}" th:each="n:${#numbers.sequence(1,totalPages)}" class="pagination pagination-lg" style="float: left;margin: 0 0">
 					<li th:if="${n}-1==${currentPage}" class="active">
-						<a th:href="@{/forrent(pageNum=${n}-1,subwayline=${subwayline},mode=${mode},
-				orientation=${orientation},item=${item},term=${term},minPrice=${minPrice},maxPrice=${maxPrice})}" style="border-radius: 0">[[${n}]]</a>
+						<a href="javascript:;" th:onclick="|hidFromSubmit(${n})|" style="border-radius: 0">[[${n}]]</a>
 					</li>
 					<li th:if="${n}-1!=${currentPage}">
-						<a th:href="@{/forrent(pageNum=${n}-1,subwayline=${subwayline},mode=${mode},
-				orientation=${orientation},item=${item},term=${term},minPrice=${minPrice},maxPrice=${maxPrice})}" style="border-radius: 0">[[${n}]]</a>
+						<a href="javascript:;" th:onclick="|hidFromSubmit(${n})|" style="border-radius: 0">[[${n}]]</a>
 					</li>
 				</div>
 
-				<!--后一页-->
-				<li><a th:if="${currentPage}==${totalPages}-1" th:href="@{/forrent(pageNum=${currentPage},subwayline=${subwayline},mode=${mode},
-				orientation=${orientation},item=${item},term=${term},minPrice=${minPrice},maxPrice=${maxPrice})}"><i class="fa fa-angle-left">»</i></a></li>
-				<li><a th:if="${currentPage}!=${totalPages}-1" th:href="@{/forrent(pageNum=${currentPage}+1,subwayline=${subwayline},mode=${mode},
-				orientation=${orientation},item=${item},term=${term},minPrice=${minPrice},maxPrice=${maxPrice})}"><i class="fa fa-angle-left">»</i></a></li>
 			</ul>
 		</div>
 		<div class="clearfix"> </div>
 	</div>
 
+	<div>
+		<form action="/forrent" id="hid_form">
+			<input type="hidden" id="hid_pageNum" name="pageNum" th:value="${pageNum}">
+			<input type="hidden" id="hid_subwayline" name="subwayline" th:value="${subwayline}">
+			<input type="hidden" id="hid_mode" name="mode" th:value="${mode}">
+			<input type="hidden" id="hid_orientation" name="orientation" th:value="${orientation}">
+			<input type="hidden" id="hid_item" name="item" th:value="${item}">
+			<input type="hidden" id="hid_term" name="term" th:value="${term}">
+			<input type="hidden" id="hid_minPrice" name="minPrice" th:value="${minPrice}">
+			<input type="hidden" id="hid_maxPrice" name="maxPrice" th:value="${maxPrice}">
+		</form>
+	</div>
 	<!---footer--->
 	<div th:replace="front/commons/footer"></div>
 	<!---footer--->
@@ -225,4 +225,21 @@
 	<div th:replace="front/commons/register"></div>
 	<!-- //Register -->
 </body>
+<script src="/front/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript">
+	$(function () {
+        $("#subwayline").val($("#hid_subwayline").val())
+		$("#mode").val($("#hid_mode").val())
+		$("#orientation").val($("#hid_orientation").val())
+		$("#item").val($("#hid_item").val())
+		$("#term").val($("#hid_term").val())
+		$("#minPrice").val($("#hid_minPrice").val())
+		$("#maxPrice").val($("#hid_maxPrice").val())
+    })
+
+	function hidFromSubmit(n) {
+		$("#hid_pageNum").val(n-1)
+		$("#hid_form").submit()
+    }
+</script>
 </html>

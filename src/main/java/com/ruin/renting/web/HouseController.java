@@ -47,6 +47,7 @@ public class HouseController {
         model.addAttribute("totalPages",totalPages);
         model.addAttribute("currentPage",pageNum);
 
+        model.addAttribute("pageNum",pageNum);
         model.addAttribute("subwayline",subwayline);
         model.addAttribute("mode",mode);
         model.addAttribute("orientation",orientation);
