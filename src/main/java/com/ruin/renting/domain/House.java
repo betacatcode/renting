@@ -2,6 +2,7 @@ package com.ruin.renting.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -41,6 +42,7 @@ public class House {
     @ManyToMany(mappedBy = "collectHouses")
     private Set<SysUser> collectUsers=new HashSet<>();
 
+    @JsonIgnoreProperties(ignoreUnknown = true, value = {"ownHouses"})
     @ManyToOne(targetEntity = SysUser.class)
     @JoinColumn(name="owner_id",referencedColumnName = "id")
     private SysUser owner;

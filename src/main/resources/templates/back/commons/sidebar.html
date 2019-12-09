@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <meta charset="UTF-8">
 </head>
@@ -60,7 +61,7 @@
 
                 <b class="arrow"></b>
 
-                <ul class="submenu">
+                <ul class="submenu"  sec:authorize="hasRole('ROLE_ADMIN')">
                     <li>
                         <a href="/back/houseManage">
                             <i class="menu-icon fa fa-caret-right"></i>
@@ -73,6 +74,20 @@
                         <a href="/back/tagManage">
                             <i class="menu-icon fa fa-caret-right"></i>
                             标签管理
+                        </a>
+                        <b class="arrow"></b>
+                    </li>
+                </ul>
+
+                <ul class="submenu"  sec:authorize="hasRole('ROLE_USER')">
+                    <li>
+                        <a href="#">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            个人信息管理
+                        </a>
+                        <a href="#">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            收藏管理
                         </a>
                         <b class="arrow"></b>
                     </li>

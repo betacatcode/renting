@@ -42,7 +42,7 @@
 	<script src="assets/js/respond.min.js"></script>
 	<![endif]-->
 </head>
-	<body class="login-layout">
+	<body class="login-layout light-login">
 		<div class="main-container">
 			<div class="main-content">
 				<div class="row">
@@ -50,11 +50,11 @@
 						<div class="login-container">
 							<div class="center">
 								<h1>
-									<i class="ace-icon fa fa-leaf green"></i>
-									<span class="red">Ace</span>
-									<span class="white" id="id-text2">Application</span>
+									<a href="/">
+										<i class="ace-icon fa fa-leaf green"></i>
+										<span>返回主页</span>
+									</a>
 								</h1>
-								<h4 class="blue" id="id-company-text">&copy; Company Name</h4>
 							</div>
 
 							<div class="space-6"></div>
@@ -70,7 +70,7 @@
 
 											<div class="space-6"></div>
 
-											<form action="/doLogin">
+											<form action="/back/doLogin" method="post">
 												<fieldset>
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
@@ -195,42 +195,45 @@
 											<div class="space-6"></div>
 											<p> Enter your details to begin: </p>
 
-											<form>
+											<form id="regForm" action="/register" method="post">
 												<fieldset>
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="email" class="form-control" placeholder="Email" />
+															<input type="phone" name="phone" id="phone" class="form-control" placeholder="手机号码" />
+															<i class="ace-icon fa 	fa-comment-o "></i>
+														</span>
+													</label>
+
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input type="email" name="email" id="email" class="form-control" placeholder="Email"/>
 															<i class="ace-icon fa fa-envelope"></i>
 														</span>
 													</label>
 
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="text" class="form-control" placeholder="Username" />
+															<input type="text" name="username" id="username" class="form-control" placeholder="用户名" onchange="checkUsername()" />
 															<i class="ace-icon fa fa-user"></i>
 														</span>
 													</label>
 
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="password" class="form-control" placeholder="Password" />
+															<input type="password" name="password" id="password" class="form-control" placeholder="密码" />
 															<i class="ace-icon fa fa-lock"></i>
 														</span>
 													</label>
 
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="password" class="form-control" placeholder="Repeat password" />
+															<input type="password" class="form-control" id="repeatPassword" placeholder="请重复输入密码" />
 															<i class="ace-icon fa fa-retweet"></i>
 														</span>
 													</label>
 
 													<label class="block">
 														<input type="checkbox" class="ace" />
-														<span class="lbl">
-															I accept the
-															<a href="#">User Agreement</a>
-														</span>
 													</label>
 
 													<div class="space-24"></div>
@@ -241,7 +244,7 @@
 															<span class="bigger-110">Reset</span>
 														</button>
 
-														<button type="button" class="width-65 pull-right btn btn-sm btn-success">
+														<button type="button" class="width-65 pull-right btn btn-sm btn-success" onclick="regFormSubmit()">
 															<span class="bigger-110">Register</span>
 
 															<i class="ace-icon fa fa-arrow-right icon-on-right"></i>
@@ -294,7 +297,36 @@
 		<script type="text/javascript">
 			if('ontouchstart' in document.documentElement) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
 		</script>
-
+		<script type="text/javascript">
+			function checkUsername() {
+				var username=$("#username").val()
+				if(username!=""){
+					$.ajax({
+						method:"GET",
+						data:"username="+username,
+						url:"/checkUser",
+						success:function (data) {
+							if(data==200){
+							    alert("该用户名已被注册")
+								$("#username").val("")
+							}
+                        }
+					})
+				}
+            }
+            function regFormSubmit() {
+				if($("#phone").val()==""||$("#username").val()==""||$("#email").val()==""
+                    ||$("#password").val()==""||$("#repeatPassword").val()==""){
+				    alert("注册信息不能为空")
+					return;
+				}
+				if($("#password").val()!=$("#repeatPassword").val()){
+				    alert("两次密码不同")
+					return;
+				}
+				$("#regForm").submit()
+            }
+		</script>
 		<!-- inline scripts related to this page -->
 		<script type="text/javascript">
 			jQuery(function($) {

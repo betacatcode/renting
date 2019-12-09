@@ -1,5 +1,6 @@
 package com.ruin.renting.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,6 +32,7 @@ public class SysUser implements UserDetails {
         inverseJoinColumns = {@JoinColumn(name = "roles_id",referencedColumnName = "id")})
     private Set<SysRole> roles=new HashSet<>();
 
+
 //    用户收藏的房子 多对多的关系 用户可以收藏多个房子 每个房子也能被多个用户收藏
     @ManyToMany(targetEntity =House.class)
     @JoinTable(name= "tb_sys_user_collect_houses",
@@ -39,6 +41,7 @@ public class SysUser implements UserDetails {
     private Set<House> collectHouses=new HashSet<>();
 
 //    用户拥有的房子 一对多的关系 并且支持级联操作
+    @JsonIgnoreProperties(ignoreUnknown = true, value = {"owner"})
     @OneToMany(mappedBy = "owner",cascade = CascadeType.ALL)
     private Set<House> ownHouses=new HashSet<>();
 
@@ -54,6 +57,19 @@ public class SysUser implements UserDetails {
             auths.add(new SimpleGrantedAuthority(role.getName()));
         }
         return auths;
+    }
+
+    public SysUser() {
+    }
+
+    public SysUser(String username, String password, String phone, String email, String avatar, String profile) {
+        this.username = username;
+        this.password = password;
+        this.phone = phone;
+        this.email = email;
+        this.avatar = avatar;
+        this.profile = profile;
+        this.roles = roles;
     }
 
     @Override

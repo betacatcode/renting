@@ -38,16 +38,10 @@
                     </li>
                     <li><a href="/news">新闻热点</a></li>
                     <li><a href="/recommend">猜你喜欢</a></li>
-                    <li><a href="codes.html">常见问题</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">个人中心<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#" data-toggle="modal" data-target="#myModal">登陆</a></li>
-                            <li><a href="#" data-toggle="modal" data-target="#myModal1">注册</a></li>
-                            <li><a href="#">注销</a></li>
-                            <li><a href="/back/index">后台空间</a></li>
-                        </ul>
-                    </li>
+                    <!--<li><a href="codes.html">常见问题</a></li>-->
+                    <li th:if="${session.SPRING_SECURITY_CONTEXT}==null"><a href="/back/login">登陆</a></li>
+                    <li th:if="${session.SPRING_SECURITY_CONTEXT}!=null"><a href="/back/index">后台空间</a></li>
+                    <li th:if="${session.SPRING_SECURITY_CONTEXT}!=null"><a href="/logout">注销</a></li>
                 </ul>
                 <!--<div class="phone">-->
                 <!--<span><i class="glyphicon glyphicon-phone" aria-hidden="true"></i>1-999-4563-555</span>-->
