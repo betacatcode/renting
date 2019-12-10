@@ -87,4 +87,11 @@ public class UserServiceImpl implements UserService {
             return true;
         return false;
     }
+
+    @Override
+    public Set<House> findUserCollectHouses() {
+        Integer userId=userInfo.getCurrentUser().getId();
+        SysUser user=sysUserRepository.findById(userId).get();
+        return user.getCollectHouses();
+    }
 }

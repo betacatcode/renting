@@ -4,10 +4,7 @@ import com.ruin.renting.domain.House;
 import com.ruin.renting.domain.News;
 import com.ruin.renting.domain.Partition;
 import com.ruin.renting.domain.Tag;
-import com.ruin.renting.service.HouseService;
-import com.ruin.renting.service.NewsService;
-import com.ruin.renting.service.PartitionService;
-import com.ruin.renting.service.TagService;
+import com.ruin.renting.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.jws.soap.SOAPBinding;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author ruin
@@ -45,6 +44,9 @@ public class BackController {
 
     @Autowired
     TagService tagService;
+
+    @Autowired
+    UserService userService;
 
     @RequestMapping("/index")
     public String goIndex(){
@@ -84,10 +86,12 @@ public class BackController {
         return "/back/admin/tagManage";
     }
 
-    @RequestMapping("/auth")
-    @ResponseBody
-    public Authentication getAuth(){
-        return SecurityContextHolder.getContext().getAuthentication();
+    @RequestMapping("/collectManage")
+    public String goCollects(Model model){
+
+        Set<House> houses = userService.findUserCollectHouses();
+        model.addAttribute("houses",houses);
+        return "/back/user/collectManage";
     }
 
 }

@@ -1,5 +1,9 @@
 package com.ruin.renting.service;
 
+import com.ruin.renting.domain.House;
+
+import java.util.Set;
+
 /**
  * @author ruin
  * @date 2019/12/9-20:22
@@ -15,4 +19,6 @@ public interface UserService {
     public Integer cancelCollect(Integer houseId);
 
     public boolean hasCollected(Integer houseId);
+
+    public Set<House> findUserCollectHouses();
 }
