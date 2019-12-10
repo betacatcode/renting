@@ -5,6 +5,8 @@ import com.ruin.renting.domain.House;
 import com.ruin.renting.domain.HouseImg;
 import com.ruin.renting.domain.SysUser;
 import com.ruin.renting.service.HouseService;
+import com.ruin.renting.service.UserService;
+import com.ruin.renting.utils.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.bind.DefaultValue;
@@ -33,6 +35,12 @@ public class HouseController {
 
     @Autowired
     HouseService houseService;
+
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    UserInfo userInfo;
 
     @Value("4")
     int pageSize;
@@ -66,6 +74,10 @@ public class HouseController {
         House house=houseService.findByName(name);
         SysUser owner=houseService.findOwner(house);
 
+        if(userService.hasCollected(house.getId()))
+            model.addAttribute("hasCollected","true");
+        else
+            model.addAttribute("hasCollected","false");
         model.addAttribute("house",house);
         model.addAttribute("owner",owner);
         return "front/details";

@@ -1,10 +1,15 @@
 package com.ruin.renting.web;
 
+import com.ruin.renting.dao.HouseRepository;
+import com.ruin.renting.domain.House;
 import com.ruin.renting.domain.SysRole;
 import com.ruin.renting.domain.SysUser;
+import com.ruin.renting.service.HouseService;
 import com.ruin.renting.service.UserService;
 import com.ruin.renting.utils.HttpClientPostFs;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +30,9 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    HttpClientPostFs http;
+
     @GetMapping("/checkUser")
     @ResponseBody
     public Integer checkUser(String username){
@@ -36,9 +44,21 @@ public class UserController {
                            String password,HttpServletResponse response) throws IOException {
         userService.doRegister(phone,email,username,password);
         String url="/back/doLogin";
-        HttpClientPostFs http=new HttpClientPostFs(response);
+        http.setResponse(response);
         http.setParameter("username",username);
         http.setParameter("password",password);
         http.sendByPost(url);
+    }
+
+    @RequestMapping("/collect")
+    @ResponseBody
+    public Integer collect(Integer id){
+        return userService.collectHouse(id);
+    }
+
+    @RequestMapping("/cancelCollect")
+    @ResponseBody
+    public Integer cancelCollect(Integer id){
+        return userService.cancelCollect(id);
     }
 }

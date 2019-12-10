@@ -26,6 +26,10 @@ public class HttpClientPostFs {
         this.response = response;
     }
 
+    public void setResponse(HttpServletResponse response) {
+        this.response = response;
+    }
+
     public void setParameter(String key, String value) {
 
         HttpClientPostFs.parameter.put(key, value);

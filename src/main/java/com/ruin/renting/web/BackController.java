@@ -55,7 +55,6 @@ public class BackController {
     public String goLogin(){
         return "/back/login";
     }
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping("/houseManage")
     public String goHouse(Model model,@RequestParam(defaultValue = "0")int pageNum) {
         Page<House> data=houseService.findAllHouses(PageRequest.of(pageNum,10));
@@ -64,7 +63,6 @@ public class BackController {
         return "/back/admin/houseManage";
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping("/newsManage")
     public String goNews(Model model,@RequestParam(defaultValue = "0")int pageNum) {
         Page<News> data=newsService.findAllNews(PageRequest.of(pageNum,10));
@@ -76,7 +74,6 @@ public class BackController {
         return "/back/admin/newsManage";
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping("/tagManage")
     public String goTags(Model model,@RequestParam(defaultValue = "0")int pageNum){
 

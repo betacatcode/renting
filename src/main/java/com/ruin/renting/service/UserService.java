@@ -9,4 +9,10 @@ public interface UserService {
 
     public void doRegister(String phone,String email,String username,
                            String password);
+
+    public Integer collectHouse(Integer houseId);
+
+    public Integer cancelCollect(Integer houseId);
+
+    public boolean hasCollected(Integer houseId);
 }
