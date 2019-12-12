@@ -1,26 +1,42 @@
 package com.ruin.renting.domain;
 
+import javax.persistence.*;
+import java.util.Date;
+
 /**
  * @author ruin
  * @date 2019/10/27-15:59
  */
+
+@Entity
+@Table(name = "tb_msg")
 public class Msg {
-    private String title;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @OneToOne
+    private SysUser sender;
+
+    @OneToOne
+    private SysUser receiver;
     private String content;
-    private String etraInfo;
+    private Date sendingTime;
 
-    public Msg(String title, String content, String etraInfo) {
-        this.title = title;
-        this.content = content;
-        this.etraInfo = etraInfo;
+    public SysUser getSender() {
+        return sender;
     }
 
-    public String getTitle() {
-        return title;
+    public void setSender(SysUser sender) {
+        this.sender = sender;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public SysUser getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(SysUser receiver) {
+        this.receiver = receiver;
     }
 
     public String getContent() {
@@ -31,11 +47,21 @@ public class Msg {
         this.content = content;
     }
 
-    public String getEtraInfo() {
-        return etraInfo;
+    public Date getSendingTime() {
+        return sendingTime;
     }
 
-    public void setEtraInfo(String etraInfo) {
-        this.etraInfo = etraInfo;
+    public void setSendingTime(Date sendingTime) {
+        this.sendingTime = sendingTime;
+    }
+
+    public Msg() {
+    }
+
+    public Msg(SysUser sender, SysUser receiver, String content, Date sendingTime) {
+        this.sender = sender;
+        this.receiver = receiver;
+        this.content = content;
+        this.sendingTime = sendingTime;
     }
 }

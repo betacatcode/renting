@@ -172,7 +172,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             <li><i class="glyphicon glyphicon-phone" aria-hidden="true"></i> email : [[${owner.email}]]</li>
                         </ul>
                         <p><span>个人简介: </span>[[${owner.profile}]]</p>
-                        <a href="#" class="button2">私信</a>
+                        <a th:href="@{/back/chat(receiverName=${owner.username})}" class="button2">在线联系</a>
                 </div>
                 <div class="clearfix"></div>
             </div>

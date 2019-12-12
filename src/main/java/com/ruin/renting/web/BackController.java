@@ -94,4 +94,14 @@ public class BackController {
         return "/back/user/collectManage";
     }
 
+    @RequestMapping("/chat")
+    public String goChat(Model model,String receiverName){
+        model.addAttribute("receiverName",receiverName);
+        return "/back/user/chat";
+    }
+
+    @RequestMapping("/message")
+    public String goMessage(){
+        return "/back/user/blank";
+    }
 }

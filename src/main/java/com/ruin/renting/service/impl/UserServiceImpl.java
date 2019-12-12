@@ -1,9 +1,11 @@
 package com.ruin.renting.service.impl;
 
 import com.ruin.renting.dao.HouseRepository;
+import com.ruin.renting.dao.MsgRepository;
 import com.ruin.renting.dao.RoleRepository;
 import com.ruin.renting.dao.SysUserRepository;
 import com.ruin.renting.domain.House;
+import com.ruin.renting.domain.Msg;
 import com.ruin.renting.domain.SysRole;
 import com.ruin.renting.domain.SysUser;
 import com.ruin.renting.service.UserService;
@@ -13,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -31,6 +34,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     HouseRepository houseRepository;
+
+    @Autowired
+    MsgRepository msgRepository;
 
     @Autowired
     UserInfo userInfo;
@@ -93,5 +99,14 @@ public class UserServiceImpl implements UserService {
         Integer userId=userInfo.getCurrentUser().getId();
         SysUser user=sysUserRepository.findById(userId).get();
         return user.getCollectHouses();
+    }
+
+    @Override
+    public void saveMsg(String senderName, String receiverName, String content) {
+        Date date=new Date(System.currentTimeMillis());
+        SysUser sender=sysUserRepository.findByUsername(senderName);
+        SysUser receiver=sysUserRepository.findByUsername(receiverName);
+        Msg msg=new Msg(sender,receiver,content,date);
+        msgRepository.save(msg);
     }
 }

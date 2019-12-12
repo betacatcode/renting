@@ -21,4 +21,6 @@ public interface UserService {
     public boolean hasCollected(Integer houseId);
 
     public Set<House> findUserCollectHouses();
+
+    public void saveMsg(String senderName,String receiverName,String content);
 }
