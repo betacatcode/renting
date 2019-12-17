@@ -1,5 +1,6 @@
 package com.ruin.renting.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import java.util.Date;
  * @date 2019/10/27-15:59
  */
 
+@JsonFormat(pattern = "yyyy-MM-dd",timezone="GMT+8")
 @Entity
 @Table(name = "tb_msg")
 public class Msg {
@@ -23,6 +25,8 @@ public class Msg {
     @OneToOne
     private SysUser receiver;
     private String content;
+
+    @JsonFormat(timezone="GMT+8")
     private Date sendingTime;
 
     public SysUser getSender() {

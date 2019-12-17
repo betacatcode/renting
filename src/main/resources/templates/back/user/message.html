@@ -77,7 +77,7 @@
                                 </div>
                                 <div class="dialog-footer">
                                     <div class="btn-group">
-                                        <button id="send" class="btn-send">发送</button>
+                                        <button id="send" class="btn-send" onclick="chat()">发送</button>
                                     </div>
                                 </div>
                             </div>
@@ -86,6 +86,7 @@
                  </div>
 			</div><!-- /.main-content -->
             <input type="hidden" id="userID" th:value="${userID}">
+            <input type="hidden" id="receiver">
 		</div><!-- /.main-container -->
 
 		<!-- basic scripts -->
@@ -112,14 +113,17 @@
 		<!-- inline scripts related to this page -->
 	</body>
 	<script src="assets/js/jquery-1.11.3.min.js"></script>
+	<script src="/back/assets/js/sockjs.min.js"></script>
+    <script src="/back/assets/js/stomp.min.js"></script>
     <script type="text/javascript">
         $(function() {
+          //  获取联系人
           $.ajax({
             method:"get",
             url:'/back/findContactUsers',
             success:function(data) {
                 for(var i=0;i<data.length;i++){
-                    var li=$('<li class="contact-list-item" onclick="getChat('+data[i].id+')"></li>')
+                    var li=$('<li class="contact-list-item" id="user'+data[i].id+'" onclick="getChat('+data[i].id+')"></li>')
                     var span=$('<span class="contact-name" style="text-align: center"><h5>'+data[i].username+'</h5></span>')
                     li.append(span)
                     $("#contact").append(li)
@@ -127,14 +131,85 @@
             }
           })
         })
+
+
+        //连接endpoint名为endpointChat
+        var sock=new SockJS("/endpointChat");
+        var stomp=Stomp.over(sock);
+        stomp.connect('guest','guest',function (frame) {
+            //订阅/user/queue/notifications发送的消息 与控制器中的保持一致
+            stomp.subscribe("/user/queue/notifications",handleNotification);
+        })
+
+         //处理接收到的消息
+         function handleNotification(message) {
+            var data=JSON.parse(message.body)
+            if(data.sender.id==$("#receiver").val()){
+                var div=$('<div class="record-item"></div>')
+                var record_label=$('<p class="record-label"></p>')
+
+                var sender=$('<span class="color-deep-blue">'+data.sender.username+'</span>')
+                data.sendingTime=data.sendingTime.split('.')[0].replace(/T/g,' ')
+                var time=$('<span class="color-blue">'+' '+data.sendingTime+'</span>')
+                var record_text=$('<p class="record-text">'+data.content+'</p>')
+                record_label.append(sender)
+                record_label.append(time)
+                div.append(record_label)
+                div.append(record_text)
+                $("#content").append(div)
+                $('#content')[0].scrollTop =$('#content')[0].scrollHeight;
+            }
+
+         }
+
+         function sendSpittle(text) {
+            stomp.send("/chat",{},$("#receiver").val()+":"+text);
+        }
+
+        //发送消息
+        function chat() {
+            var text=$("#msg").val()
+
+            sendSpittle(text)
+            var div=$('<div class="record-item"></div>')
+            var record_label=$('<p class="record-label"></p>')
+            var sender=$('<span class="color-deep-blue">'+'我'+'</span>')
+            var dateTime=new Date().Format("yyyy-MM-dd HH:mm:ss")
+            var time=$('<span class="color-blue">'+' '+dateTime+'</span>')
+            record_label.append(sender)
+            record_label.append(time)
+            div.append(record_label)
+            div.append(text)
+            $("#content").append(div)
+            $('#content')[0].scrollTop =$('#content')[0].scrollHeight;
+        }
+
+        Date.prototype.Format = function (fmt) {
+            var o = {
+                "M+": this.getMonth() + 1, //月份
+                "d+": this.getDate(), //日
+                "H+": this.getHours(), //小时
+                "m+": this.getMinutes(), //分
+                "s+": this.getSeconds(), //秒
+                "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+                "S": this.getMilliseconds() //毫秒
+            };
+            if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+            for (var k in o)
+            if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            return fmt;
+        }
+
         function getChat(contactID) {
             var userID=$("#userID").val()
+            $("#receiver").val(contactID)
+            $(".contact-list-item").attr("class","contact-list-item")
+            $("#user"+contactID).attr("class","contact-list-item is-active")
             $.ajax({
                 method:"get",
                 url:'/back/getChatInformation',
                 data:'userID='+userID+"&contactID="+contactID,
                 success:function(data) {
-                  console.log(data)
                   $("#content").empty()
                   for(var i=0;i<data.length;i++){
                       var div=$('<div class="record-item"></div>')
@@ -142,26 +217,21 @@
                       var sender,receiver
 
                       if(data[i].sender.id==userID){
-                          sender=$('<span class="color-deep-blue">你</span>')
-                          receiver=$('<span class="color-deep-blue">'+data[i].receiver.username+'</span>')
+                          sender=$('<span class="color-deep-blue">我</span>')
                       }else {
                           sender=$('<span class="color-deep-blue">'+data[i].sender.username+'</span>')
-                          receiver=$('<span class="color-deep-blue">你</span>')
                       }
-                      var send_label=$('<label>&nbsp;发送给&nbsp;</label>')
                       data[i].sendingTime=data[i].sendingTime.split('.')[0].replace(/T/g,' ')
                       var time=$('<span class="color-blue">'+' '+data[i].sendingTime+'</span>')
                       var record_text=$('<p class="record-text">'+data[i].content+'</p>')
                       record_label.append(sender)
-                      record_label.append(send_label)
-                      record_label.append(receiver)
                       record_label.append(time)
                       record_label.append(record_text)
                       div.append(record_label)
                       div.append(record_text)
                       $("#content").append(div)
                   }
-
+                  $('#content')[0].scrollTop =$('#content')[0].scrollHeight;
                 }
             })
         }

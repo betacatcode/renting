@@ -39,7 +39,6 @@
 
         function sendSpittle(text) {
             stomp.send("/chat",{},$("#receiver").val()+":"+text);
-
         }
 
         $('#stop').click(function () {

@@ -14,6 +14,8 @@ import java.util.Set;
 public interface UserService {
     public Integer findUserByUsername(String username);
 
+    public String getUsernameById(Integer id);
+
     public void doRegister(String phone,String email,String username,
                            String password);
 
@@ -25,7 +27,7 @@ public interface UserService {
 
     public Set<House> findUserCollectHouses();
 
-    public void saveMsg(String senderName,String receiverName,String content);
+    public Msg saveMsg(String senderName,String receiverName,String content);
 
     public List<SysUser> findContactUsers();
 

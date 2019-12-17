@@ -48,6 +48,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public String getUsernameById(Integer id) {
+        return sysUserRepository.findById(id).get().getUsername();
+    }
+
+    @Override
     public void doRegister(String phone, String email, String username, String password) {
         String hashPWD = BCrypt.hashpw(password, BCrypt.gensalt());
         SysUser user=new SysUser(username,hashPWD,phone,email,"no","no");
@@ -100,12 +105,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveMsg(String senderName, String receiverName, String content) {
+    public Msg saveMsg(String senderName, String receiverName, String content) {
         Date date=new Date(System.currentTimeMillis());
         SysUser sender=sysUserRepository.findByUsername(senderName);
         SysUser receiver=sysUserRepository.findByUsername(receiverName);
         Msg msg=new Msg(sender,receiver,content,date);
         msgRepository.save(msg);
+        return msg;
     }
 
     @Override
