@@ -15,9 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author ruin
@@ -108,5 +106,22 @@ public class UserServiceImpl implements UserService {
         SysUser receiver=sysUserRepository.findByUsername(receiverName);
         Msg msg=new Msg(sender,receiver,content,date);
         msgRepository.save(msg);
+    }
+
+    @Override
+    public List<SysUser> findContactUsers() {
+        Integer userId=userInfo.getCurrentUser().getId();
+        List<SysUser> users=new ArrayList<>();
+        List<Integer> contactsIds = msgRepository.getContactsId(userId);
+        for(Integer contactsId:contactsIds){
+            SysUser user=sysUserRepository.findById(contactsId).get();
+            users.add(user);
+        }
+        return users;
+    }
+
+    @Override
+    public List<Msg> getChatInformation(Integer userId,Integer contactId) {
+        return msgRepository.getChatInformation(userId,contactId);
     }
 }

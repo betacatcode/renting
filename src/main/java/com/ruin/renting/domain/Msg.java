@@ -1,5 +1,7 @@
 package com.ruin.renting.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -63,5 +65,16 @@ public class Msg {
         this.receiver = receiver;
         this.content = content;
         this.sendingTime = sendingTime;
+    }
+
+    @Override
+    public String toString() {
+        return "Msg{" +
+                "id=" + id +
+                ", sender=" + sender +
+                ", receiver=" + receiver +
+                ", content='" + content + '\'' +
+                ", sendingTime=" + sendingTime +
+                '}';
     }
 }

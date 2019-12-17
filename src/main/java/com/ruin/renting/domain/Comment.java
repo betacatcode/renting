@@ -1,5 +1,7 @@
 package com.ruin.renting.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.sql.Date;
 
@@ -21,6 +23,7 @@ public class Comment {
     @ManyToOne(targetEntity = News.class)
     @JoinColumn(name="comment_news_id",referencedColumnName = "id")
     private News news;
+
 
     @ManyToOne(targetEntity = SysUser.class )
     @JoinColumn(name="comment_user_id",referencedColumnName = "id")

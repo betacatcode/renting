@@ -1,40 +1,169 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width">
-    <title>Chat Room</title>
-<link rel="shortcut icon" href="favicon.ico"></head>
-<link rel="stylesheet" href="/back/assets/css/index.css">
-<body>
-<div class="container">
-    <div class="chat-room">
-        <div class="send-to">
-            <h2>Send To</h2>
-            <ul id="contact" class="contact-list"></ul>
-        </div>
-        <div class="conversation">
-            <div class="header">
-                <label for="nickname">Name:</label>
-                <input id="nickname" type="text" placeholder="Pick a nickname."/>
-            </div>
-            <div class="dialog">
-                <div id="content" class="dialog-content"></div>
-                <div class="dialog-input">
-                    <label for="msg"></label>
-                    <textarea id="msg"></textarea>
-                </div>
-                <div class="dialog-footer">
-                    <div class="copyright">
-                        <small>email - lonelydawn@sina.com</small>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+    	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    	<meta charset="utf-8" />
+    	<title>聊天信息管理</title>
+    	<link rel="stylesheet" href="/back/assets/css/index.css">
+
+    	<meta name="description" content="Static &amp; Dynamic Tables" />
+    	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+    	<!-- bootstrap & fontawesome -->
+    	<link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+    	<link rel="stylesheet" href="assets/font-awesome/4.5.0/css/font-awesome.min.css" />
+
+    	<!-- page specific plugin styles -->
+
+    	<!-- text fonts -->
+    	<link rel="stylesheet" href="assets/css/fonts.googleapis.com.css" />
+
+    	<!-- ace styles -->
+    	<link rel="stylesheet" href="assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
+
+    	<!--[if lte IE 9]>
+    	<link rel="stylesheet" href="assets/css/ace-part2.min.css" class="ace-main-stylesheet" />
+    	<![endif]-->
+    	<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+    	<link rel="stylesheet" href="assets/css/ace-rtl.min.css" />
+
+    	<!--[if lte IE 9]>
+    	<link rel="stylesheet" href="assets/css/ace-ie.min.css" />
+    	<![endif]-->
+
+    	<!-- inline styles related to this page -->
+
+    	<!-- ace settings handler -->
+    	<script src="assets/js/ace-extra.min.js"></script>
+
+    	<!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
+
+    	<!--[if lte IE 8]>
+    	<script src="assets/js/html5shiv.min.js"></script>
+    	<script src="assets/js/respond.min.js"></script>
+    	<![endif]-->
+    </head>
+
+	<body class="no-skin">
+		<!--navbar-->
+        <div th:replace="back/commons/navbar"></div>
+        <!--navbar-->
+
+		<div class="main-container ace-save-state" id="main-container">
+			<script type="text/javascript">
+				try{ace.settings.loadState('main-container')}catch(e){}
+			</script>
+
+			<!--sidebar-->
+            	<div th:replace="back/commons/sidebar"></div>
+            	<!--sidebar-->
+
+			<div class="main-content">
+			    <div class="container" style="background-color: white">
+                    <div class="chat-room">
+                        <div class="send-to">
+                            <h2>联系人</h2>
+                            <ul id="contact" class="contact-list" style="margin: 0 0"></ul>
+                        </div>
+                        <div class="conversation">
+                            <div class="header">
+                                <label for="nickname">聊天消息</label>
+                            </div>
+                            <div class="dialog">
+                                <div id="content" class="dialog-content"></div>
+                                <div class="dialog-input">
+                                    <label for="msg"></label>
+                                    <textarea id="msg"></textarea>
+                                </div>
+                                <div class="dialog-footer">
+                                    <div class="btn-group">
+                                        <button id="send" class="btn-send">发送</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="btn-group">
-                        <button id="send" class="btn-send">Send</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<script type="text/javascript" src="bundle.js?7f072eb2826e692b3959"></script></body>
+                 </div>
+			</div><!-- /.main-content -->
+            <input type="hidden" id="userID" th:value="${userID}">
+		</div><!-- /.main-container -->
+
+		<!-- basic scripts -->
+
+		<!--[if !IE]> -->
+		<script src="assets/js/jquery-2.1.4.min.js"></script>
+
+		<!-- <![endif]-->
+
+		<!--[if IE]>
+        <script src="assets/js/jquery-1.11.3.min.js"></script>
+        <![endif]-->
+		<script type="text/javascript">
+			if('ontouchstart' in document.documentElement) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+		</script>
+		<script src="assets/js/bootstrap.min.js"></script>
+
+		<!-- page specific plugin scripts -->
+
+		<!-- ace scripts -->
+		<script src="assets/js/ace-elements.min.js"></script>
+		<script src="assets/js/ace.min.js"></script>
+
+		<!-- inline scripts related to this page -->
+	</body>
+	<script src="assets/js/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript">
+        $(function() {
+          $.ajax({
+            method:"get",
+            url:'/back/findContactUsers',
+            success:function(data) {
+                for(var i=0;i<data.length;i++){
+                    var li=$('<li class="contact-list-item" onclick="getChat('+data[i].id+')"></li>')
+                    var span=$('<span class="contact-name" style="text-align: center"><h5>'+data[i].username+'</h5></span>')
+                    li.append(span)
+                    $("#contact").append(li)
+                }
+            }
+          })
+        })
+        function getChat(contactID) {
+            var userID=$("#userID").val()
+            $.ajax({
+                method:"get",
+                url:'/back/getChatInformation',
+                data:'userID='+userID+"&contactID="+contactID,
+                success:function(data) {
+                  console.log(data)
+                  $("#content").empty()
+                  for(var i=0;i<data.length;i++){
+                      var div=$('<div class="record-item"></div>')
+                      var record_label=$('<p class="record-label"></p>')
+                      var sender,receiver
+
+                      if(data[i].sender.id==userID){
+                          sender=$('<span class="color-deep-blue">你</span>')
+                          receiver=$('<span class="color-deep-blue">'+data[i].receiver.username+'</span>')
+                      }else {
+                          sender=$('<span class="color-deep-blue">'+data[i].sender.username+'</span>')
+                          receiver=$('<span class="color-deep-blue">你</span>')
+                      }
+                      var send_label=$('<label>&nbsp;发送给&nbsp;</label>')
+                      data[i].sendingTime=data[i].sendingTime.split('.')[0].replace(/T/g,' ')
+                      var time=$('<span class="color-blue">'+' '+data[i].sendingTime+'</span>')
+                      var record_text=$('<p class="record-text">'+data[i].content+'</p>')
+                      record_label.append(sender)
+                      record_label.append(send_label)
+                      record_label.append(receiver)
+                      record_label.append(time)
+                      record_label.append(record_text)
+                      div.append(record_label)
+                      div.append(record_text)
+                      $("#content").append(div)
+                  }
+
+                }
+            })
+        }
+    </script>
 </html>

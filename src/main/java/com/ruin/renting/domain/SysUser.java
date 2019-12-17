@@ -1,5 +1,6 @@
 package com.ruin.renting.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -26,6 +27,7 @@ public class SysUser implements UserDetails {
     private String avatar;
     private String profile;
 
+    @JsonIgnore
     @ManyToMany(targetEntity = SysRole.class,cascade = CascadeType.ALL)
     @JoinTable(name = "tb_sys_user_roles",
         joinColumns = {@JoinColumn(name = "sys_user_id",referencedColumnName = "id")},
@@ -33,6 +35,7 @@ public class SysUser implements UserDetails {
     private Set<SysRole> roles=new HashSet<>();
 
 
+    @JsonIgnore
 //    用户收藏的房子 多对多的关系 用户可以收藏多个房子 每个房子也能被多个用户收藏
     @ManyToMany(targetEntity =House.class)
     @JoinTable(name= "tb_sys_user_collect_houses",
@@ -44,6 +47,7 @@ public class SysUser implements UserDetails {
     @JsonIgnoreProperties(ignoreUnknown = true, value = {"owner"})
     @OneToMany(mappedBy = "owner",cascade = CascadeType.ALL)
     private Set<House> ownHouses=new HashSet<>();
+
 
     @OneToMany(mappedBy = "user",cascade= CascadeType.ALL)
     private Set<Comment> commentList=new HashSet<>();

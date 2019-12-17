@@ -1,7 +1,10 @@
 package com.ruin.renting.service;
 
 import com.ruin.renting.domain.House;
+import com.ruin.renting.domain.Msg;
+import com.ruin.renting.domain.SysUser;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -23,4 +26,8 @@ public interface UserService {
     public Set<House> findUserCollectHouses();
 
     public void saveMsg(String senderName,String receiverName,String content);
+
+    public List<SysUser> findContactUsers();
+
+    public List<Msg> getChatInformation(Integer userId,Integer contactId);
 }

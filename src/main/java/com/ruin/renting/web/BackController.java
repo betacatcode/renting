@@ -1,10 +1,8 @@
 package com.ruin.renting.web;
 
-import com.ruin.renting.domain.House;
-import com.ruin.renting.domain.News;
-import com.ruin.renting.domain.Partition;
-import com.ruin.renting.domain.Tag;
+import com.ruin.renting.domain.*;
 import com.ruin.renting.service.*;
+import com.ruin.renting.utils.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -47,6 +45,9 @@ public class BackController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    UserInfo userInfo;
 
     @RequestMapping("/index")
     public String goIndex(){
@@ -101,7 +102,22 @@ public class BackController {
     }
 
     @RequestMapping("/message")
-    public String goMessage(){
-        return "/back/user/blank";
+    public String goMessage(Model model){
+        model.addAttribute("userID",userInfo.getCurrentUser().getId());
+        return "/back/user/message";
+    }
+
+    @RequestMapping("/findContactUsers")
+    @ResponseBody
+    public List<SysUser> findContactUsers(){
+        List<SysUser> contactUsers = userService.findContactUsers();
+        return contactUsers;
+    }
+
+    @RequestMapping("/getChatInformation")
+    @ResponseBody
+    public List<Msg> getChatInformation(Integer userID,Integer contactID){
+        List<Msg> chatInformation = userService.getChatInformation(userID, contactID);
+        return chatInformation;
     }
 }
