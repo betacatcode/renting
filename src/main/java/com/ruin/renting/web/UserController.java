@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -60,5 +61,17 @@ public class UserController {
     @ResponseBody
     public Integer cancelCollect(Integer id){
         return userService.cancelCollect(id);
+    }
+
+    @RequestMapping("/updateUser")
+    public String updateUser(MultipartFile avatar,String username,String profile,String email,String phone,
+                             String password1){
+        if(password1.equals("")){
+            userService.updateUser(avatar,username,profile,email,phone);
+        }else{
+            userService.updateUser(password1);
+        }
+
+        return "redirect:/back/profile";
     }
 }

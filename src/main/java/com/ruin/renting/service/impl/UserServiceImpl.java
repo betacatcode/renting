@@ -9,11 +9,13 @@ import com.ruin.renting.domain.Msg;
 import com.ruin.renting.domain.SysRole;
 import com.ruin.renting.domain.SysUser;
 import com.ruin.renting.service.UserService;
+import com.ruin.renting.utils.AvatarUtil;
 import com.ruin.renting.utils.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
@@ -37,6 +39,9 @@ public class UserServiceImpl implements UserService {
     MsgRepository msgRepository;
 
     @Autowired
+    AvatarUtil avatarUtil;
+
+    @Autowired
     UserInfo userInfo;
 
     @Override
@@ -50,6 +55,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public String getUsernameById(Integer id) {
         return sysUserRepository.findById(id).get().getUsername();
+    }
+
+    @Override
+    public SysUser getUserById(Integer id) {
+        return sysUserRepository.findById(id).get();
     }
 
     @Override
@@ -129,5 +139,32 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Msg> getChatInformation(Integer userId,Integer contactId) {
         return msgRepository.getChatInformation(userId,contactId);
+    }
+
+    @Override
+    public void updateUser(MultipartFile avatar, String username, String profile, String email, String phone) {
+        Integer userID=userInfo.getCurrentUser().getId();
+        SysUser user=sysUserRepository.findById(userID).get();
+
+        if(!avatar.getOriginalFilename().equals("")){
+            String imgName = avatarUtil.saveNewsImage(avatar, username);
+            user.setAvatar(imgName);
+        }
+        user.setUsername(username);
+        user.setProfile(profile);
+        user.setEmail(email);
+        user.setPhone(phone);
+
+        sysUserRepository.save(user);
+    }
+
+    @Override
+    public void updateUser(String password) {
+        Integer userID=userInfo.getCurrentUser().getId();
+        SysUser user=sysUserRepository.findById(userID).get();
+        String hashPWD = BCrypt.hashpw(password, BCrypt.gensalt());
+        user.setPassword(hashPWD);
+
+        sysUserRepository.save(user);
     }
 }

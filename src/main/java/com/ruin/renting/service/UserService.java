@@ -3,6 +3,7 @@ package com.ruin.renting.service;
 import com.ruin.renting.domain.House;
 import com.ruin.renting.domain.Msg;
 import com.ruin.renting.domain.SysUser;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Set;
@@ -15,6 +16,8 @@ public interface UserService {
     public Integer findUserByUsername(String username);
 
     public String getUsernameById(Integer id);
+
+    public SysUser getUserById(Integer id);
 
     public void doRegister(String phone,String email,String username,
                            String password);
@@ -32,4 +35,8 @@ public interface UserService {
     public List<SysUser> findContactUsers();
 
     public List<Msg> getChatInformation(Integer userId,Integer contactId);
+
+    public void updateUser(MultipartFile avatar, String username, String profile, String email, String phone);
+
+    public void updateUser(String password);
 }

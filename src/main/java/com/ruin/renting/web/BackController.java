@@ -120,4 +120,10 @@ public class BackController {
         List<Msg> chatInformation = userService.getChatInformation(userID, contactID);
         return chatInformation;
     }
+
+    @RequestMapping("/profile")
+    public String goProfile(Model model){
+        model.addAttribute("user",userService.getUserById(userInfo.getCurrentUser().getId()));
+        return "/back/user/profile";
+    }
 }
