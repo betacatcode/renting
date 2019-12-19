@@ -87,6 +87,15 @@ public class BackController {
         return "/back/admin/tagManage";
     }
 
+    @RequestMapping("/partitionManage")
+    public String goPartitions(Model model){
+
+        partitionService.partitionStatistics();
+        List<Partition> allPartitions = partitionService.findAllPartitions();
+        model.addAttribute("partitions",allPartitions);
+        return "/back/admin/partitionManage";
+    }
+
     @RequestMapping("/collectManage")
     public String goCollects(Model model){
 

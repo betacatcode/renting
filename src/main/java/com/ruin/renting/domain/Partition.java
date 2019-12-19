@@ -57,6 +57,14 @@ public class Partition {
         this.news = news;
     }
 
+    public Partition() {
+    }
+
+    public Partition(String name, Integer num) {
+        this.name = name;
+        this.num = num;
+    }
+
     @Override
     public String toString() {
         return "Partition{" +

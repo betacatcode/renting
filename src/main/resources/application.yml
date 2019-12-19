@@ -28,4 +28,4 @@ logging:
       springframework:
         security: info
 server:
-  port: 80
+  port: 8080

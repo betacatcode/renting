@@ -13,4 +13,14 @@ public interface PartitionService {
 
     public Partition findPartitionByName(String name);
 
+    public void partitionStatistics();
+
+    public void savePartition(Partition p);
+
+    public Partition findPartitionByID(Integer id);
+
+    public void updatePartition(Integer id,String name);
+
+    public Integer deletePartitionByID(Integer id);
+
 }

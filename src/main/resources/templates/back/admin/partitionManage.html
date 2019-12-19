@@ -3,7 +3,7 @@
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<meta charset="utf-8" />
-	<title>标签信息管理</title>
+	<title>分区管理</title>
 
 	<meta name="description" content="Static &amp; Dynamic Tables" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
@@ -76,7 +76,7 @@
 						系统管理
 						<small>
 							<i class="ace-icon fa fa-angle-double-right"></i>
-							标签管理
+							分区管理
 						</small>
 					</h1>
 				</div><!-- /.page-header -->
@@ -90,22 +90,6 @@
 									<i class="ace-icon fa  fa-pencil-square-o  bigger-230"></i>
 									新增记录
 								</a>
-							</div>
-							<div class="col-xs-2">
-								<div class="input-group">
-									<span class="input-group-addon">
-										<i class="ace-icon fa fa-check"></i>
-									</span>
-									<form id="findForm" action="/back/findTagNameLike" method="post">
-										<input type="text" class="form-control search-query" name="name" placeholder="按标签名模糊搜索">
-									</form>
-									<span class="input-group-btn">
-										<button type="button" class="btn btn-inverse btn-white" onclick="findFromSubmit()">
-											<span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
-											搜索
-										</button>
-									</span>
-								</div>
 							</div>
 						</div>
 						<div class="row">
@@ -123,21 +107,21 @@
 									</thead>
 
 									<tbody>
-									<tr th:each="tag:${tags.content}" th:id="'tag'+${tag.id}">
+									<tr th:each="partition:${partitions}" th:id="'partition'+${partition.id}">
 
 
 										<td>
-											[[${tag.id}]]
+											[[${partition.id}]]
 										</td>
-										<td>[[${tag.name}]]</td>
-										<td>[[${tag.num}]]</td>
+										<td>[[${partition.name}]]</td>
+										<td>[[${partition.num}]]</td>
 
 										<td>
 											<div class="hidden-sm hidden-xs btn-group">
-												<button href="#update-table" class="btn btn-xs btn-info"  data-toggle="modal" th:onclick="|getTagByID(${tag.id})|">
+												<button href="#update-table" class="btn btn-xs btn-info"  data-toggle="modal" th:onclick="|getPartitionByID(${partition.id})|">
 													<i class="ace-icon fa fa-pencil bigger-120"></i>
 												</button>
-												<button class="btn btn-xs btn-danger" th:onclick="|deleteTagByID(${tag.id})|">
+												<button class="btn btn-xs btn-danger" th:onclick="|deletePartitionByID(${partition.id})|">
 													<i class="ace-icon fa fa-trash-o bigger-120"></i>
 												</button>
 											</div>
@@ -188,12 +172,12 @@
 							<div class="col-xs-6 col-xs-offset-5">
 								<div>
 									<ul class="pagination">
-										<div class="pagination" th:if="${tags.totalPages!=0}" th:each="n:${#numbers.sequence(1,tags.totalPages)}" style="margin: 20px -1px;">
-											<li th:if="${tags.number}==${n}-1" class="active">
-												<a th:href="@{/back/tagManage(pageNum=${n}-1)}">[[${n}]]</a>
+										<div class="pagination" th:if="${partitions.totalPages!=0}" th:each="n:${#numbers.sequence(1,partitions.totalPages)}" style="margin: 20px -1px;">
+											<li th:if="${partitions.number}==${n}-1" class="active">
+												<a th:href="@{/back/partitionManage(pageNum=${n}-1)}">[[${n}]]</a>
 											</li>
-											<li th:if="${tags.number}!=${n}-1">
-												<a th:href="@{/back/tagManage(pageNum=${n}-1)}">[[${n}]]</a>
+											<li th:if="${partitions.number}!=${n}-1">
+												<a th:href="@{/back/partitionManage(pageNum=${n}-1)}">[[${n}]]</a>
 											</li>
 										</div>
 									</ul>
@@ -205,12 +189,12 @@
 							<div class="col-xs-6 col-xs-offset-5">
 								<div>
 									<ul class="pagination">
-										<div class="pagination" th:if="${tags.totalPages!=0}" th:each="n:${#numbers.sequence(1,tags.totalPages)}" style="margin: 20px -1px;">
-											<li th:if="${tags.number}==${n}-1" class="active">
-												<a th:href="@{/back/findTagNameLike(pageNum=${n}-1,name=${name})}">[[${n}]]</a>
+										<div class="pagination" th:if="${partitions.totalPages!=0}" th:each="n:${#numbers.sequence(1,partitions.totalPages)}" style="margin: 20px -1px;">
+											<li th:if="${partitions.number}==${n}-1" class="active">
+												<a th:href="@{/back/findPartitionNameLike(pageNum=${n}-1,name=${name})}">[[${n}]]</a>
 											</li>
-											<li th:if="${tags.number}!=${n}-1">
-												<a th:href="@{/back/findTagNameLike(pageNum=${n}-1,name=${name})}">[[${n}]]</a>
+											<li th:if="${partitions.number}!=${n}-1">
+												<a th:href="@{/back/findPartitionNameLike(pageNum=${n}-1,name=${name})}">[[${n}]]</a>
 											</li>
 										</div>
 									</ul>
@@ -231,11 +215,11 @@
 									</div>
 
 									<div class="modal-body no-padding">
-										<form id="addForm" action="/addTag" method="post" class="form-horizontal" role="form">
+										<form id="addForm" action="/addPartition" method="post" class="form-horizontal" role="form">
 											<br>
 
 											<div class="form-group">
-												<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 标签名 </label>
+												<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 分区名 </label>
 
 												<div class="col-sm-9">
 													<input type="text" id="form-field-1" name="name" placeholder="名字" class="col-xs-10 col-sm-5" />
@@ -275,7 +259,7 @@
 									</div>
 
 									<div class="modal-body no-padding">
-										<form id="updateForm" action="/updateTag" method="post" class="form-horizontal" role="form">
+										<form id="updateForm" action="/updatePartition" method="post" class="form-horizontal" role="form">
 											<br>
 											<div class="form-group">
 												<label class="col-sm-3 control-label no-padding-right" for="updateID"> ID </label>
@@ -286,7 +270,7 @@
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 房间名 </label>
+												<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 分区名 </label>
 
 												<div class="col-sm-9">
 													<input type="text" name="name" id="updateName" placeholder="名字" class="col-xs-10 col-sm-5" />
@@ -587,15 +571,15 @@
 
 <!-- basic scripts -->
 <script type="text/javascript">
-    function deleteTagByID(ID) {
-        if(confirm("确实要删除编号为"+ID+"的标签吗?")){
+    function deletePartitionByID(ID) {
+        if(confirm("确实要删除编号为"+ID+"的分区吗?")){
             $.ajax({
                 type:"POST",
-                url:"/deleteTagByID",
+                url:"/deletePartitionByID",
                 data:"ID="+ID,
                 success:function (data) {
                     if(data=="200"){
-                        $("#tag"+ID).remove()
+                        $("#partition"+ID).remove()
                         alert("删除成功")
 					}else
                     	alert("删除失败")
@@ -605,10 +589,10 @@
 
     }
 
-    function getTagByID(ID) {
+    function getPartitionByID(ID) {
         $.ajax({
             type:"POST",
-            url:"/getTagByID",
+            url:"/getPartitionByID",
             data:"ID="+ID,
             async:false,
             success:function (data) {
