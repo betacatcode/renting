@@ -1,6 +1,7 @@
 package com.ruin.renting.dao;
 
 import com.ruin.renting.domain.House;
+import com.ruin.renting.domain.SysUser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -37,4 +38,8 @@ public interface HouseRepository extends JpaRepository<House,Integer> {
     public List<House> findHighPerformanceHouses();
 
     public Page<House> findByNameLike(String name,Pageable pageable);
+
+    public Page<House> findByNameLikeAndOwner(String name,SysUser user,Pageable pageable);
+
+    public Page<House> findHouseByOwner(SysUser user,Pageable pageable);
 }

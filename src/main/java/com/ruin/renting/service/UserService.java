@@ -39,4 +39,8 @@ public interface UserService {
     public void updateUser(MultipartFile avatar, String username, String profile, String email, String phone);
 
     public void updateUser(String password);
+
+    public SysUser findByUserID(Integer ID);
+
+    public List<SysUser> findAllUsers();
 }

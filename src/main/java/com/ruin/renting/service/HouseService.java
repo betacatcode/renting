@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * @author ruin
@@ -32,19 +33,26 @@ public interface HouseService {
 
     public List<House> findHighPerformanceHouses();
 
-    public void addHouse(House house);
+    public void addHouse(House house,Integer userID);
 
     public void deleteById(Integer id);
 
     public House findByID(Integer id);
 
-    public void updateHouse(House house);
+    public void updateHouse(House house,Integer userID);
 
     public Page<House> findByNameLike(String name,Pageable pageable);
+
+    public Page<House> findByNameLikeByOwner(String name,SysUser user,Pageable pageable);
 
     public List<HouseImg> findHouseImgById(Integer id);
 
     public void updateImg(Integer id,HttpServletRequest request);
 
     public void updateVideo(Integer id,MultipartFile video);
+
+    public Page<House> findHouseByOwner(SysUser user,Pageable pageable);
+
+
+
 }

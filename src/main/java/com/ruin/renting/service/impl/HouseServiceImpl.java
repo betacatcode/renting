@@ -3,6 +3,7 @@ package com.ruin.renting.service.impl;
 import com.ruin.renting.config.Data;
 import com.ruin.renting.dao.HouseImgRepository;
 import com.ruin.renting.dao.HouseRepository;
+import com.ruin.renting.dao.SysUserRepository;
 import com.ruin.renting.domain.House;
 import com.ruin.renting.domain.HouseImg;
 import com.ruin.renting.domain.SysUser;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.persistence.Id;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.*;
@@ -36,6 +38,9 @@ public class HouseServiceImpl implements HouseService {
 
     @Autowired
     public HouseImgRepository houseImgRepository;
+
+    @Autowired
+    public SysUserRepository sysUserRepository;
 
     @Autowired
     public ImageUtil imageUtil;
@@ -96,7 +101,7 @@ public class HouseServiceImpl implements HouseService {
     }
 
     @Override
-    public void addHouse(House house) {
+    public void addHouse(House house,Integer userID) {
         house.setVideo("no");
         for(int i=1;i<=4;i++){
             HouseImg houseImg=new HouseImg();
@@ -104,6 +109,8 @@ public class HouseServiceImpl implements HouseService {
             houseImg.setHouse(house);
             house.getHouseImgList().add(houseImg);
         }
+        SysUser user= sysUserRepository.findById(userID).get();
+        house.setOwner(user);
         houseRepository.save(house);
 
     }
@@ -136,7 +143,13 @@ public class HouseServiceImpl implements HouseService {
     }
 
     @Override
-    public void updateHouse(House house) {
+    public void updateHouse(House house,Integer userID) {
+        House originHouse=houseRepository.findById(house.getId()).get();
+        house.setVideo(originHouse.getVideo());
+        house.setOwner(originHouse.getOwner());
+
+        SysUser user=sysUserRepository.findById(userID).get();
+        house.setOwner(user);
         houseRepository.save(house);
     }
 
@@ -144,6 +157,12 @@ public class HouseServiceImpl implements HouseService {
     public Page<House> findByNameLike(String name,Pageable pageable) {
         return houseRepository.findByNameLike("%"+name+"%",pageable);
     }
+
+    @Override
+    public Page<House> findByNameLikeByOwner(String name, SysUser user, Pageable pageable) {
+        return houseRepository.findByNameLikeAndOwner("%"+name+"%",user,pageable);
+    }
+
 
     @Override
     public List<HouseImg> findHouseImgById(Integer ID) {
@@ -198,6 +217,11 @@ public class HouseServiceImpl implements HouseService {
         house.setVideo(videoName);
         houseRepository.save(house);
 
+    }
+
+    @Override
+    public Page<House> findHouseByOwner(SysUser user, Pageable pageable) {
+        return houseRepository.findHouseByOwner(user,pageable);
     }
 
 

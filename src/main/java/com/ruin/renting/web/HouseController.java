@@ -144,25 +144,52 @@ public class HouseController {
     }
 
     @RequestMapping("/addHouse")
-    public String addHouse(House house){
-        houseService.addHouse(house);
-        return "redirect:/back/houseManage";
+    public String addHouse(House house,String role,@RequestParam(defaultValue = "3")Integer userID){
+        if(role.equals("admin")){
+            houseService.addHouse(house,userID);
+            return "redirect:/back/houseManage";
+        }else {
+            userID=userInfo.getCurrentUser().getId();
+            houseService.addHouse(house,userID);
+            return "redirect:/back/rentingHousesManage";
+        }
+
+
     }
 
     @RequestMapping("/updateHouse")
-    public String updateHouse(House house){
-        houseService.updateHouse(house);
-        return "redirect:/back/houseManage";
+    public String updateHouse(House house,String role,@RequestParam(defaultValue = "3")Integer userID){
+        if(role.equals("admin")){
+            houseService.updateHouse(house,userID);
+            return "redirect:/back/houseManage";
+        }else{
+            userID=userInfo.getCurrentUser().getId();
+            houseService.updateHouse(house,userID);
+            return "redirect:/back/rentingHousesManage";
+        }
+
+
     }
 
     @RequestMapping("/back/findByHouseNameLike")
-    public String findByHouseNameLike(String name, Model model,@RequestParam(defaultValue = "0") Integer pageNum){
-        Page<House> houses = houseService.findByNameLike(name, PageRequest.of(pageNum, 10));
+    public String findByHouseNameLike(String name, Model model,@RequestParam(defaultValue = "0") Integer pageNum,String role){
 
-        model.addAttribute("houses",houses);
         model.addAttribute("type","query");
         model.addAttribute("name",name);
-        return "/back/houseManage";
+        model.addAttribute("role",role);
+
+        if(role.equals("admin")){
+            Page<House> houses = houseService.findByNameLike(name, PageRequest.of(pageNum, 10));
+            model.addAttribute("houses",houses);
+            return "/back/admin/houseManage";
+        }
+        else{
+            SysUser user=userService.findByUserID(userInfo.getCurrentUser().getId());
+            Page<House> houses=houseService.findByNameLikeByOwner(name,user,PageRequest.of(pageNum, 10));
+            model.addAttribute("houses",houses);
+            return "/back/user/rentingHousesManage";
+        }
+
     }
 
     @RequestMapping("/getHouseImgByID")
@@ -178,15 +205,22 @@ public class HouseController {
     }
 
     @RequestMapping("/back/updateImg")
-    public String updateImg(Integer id,HttpServletRequest request){
+    public String updateImg(Integer id,HttpServletRequest request,String role){
         houseService.updateImg(id,request);
-        return "redirect:/back/houseManage";
+        if(role.equals("admin"))
+            return "redirect:/back/houseManage";
+        else
+            return "redirect:/back/rentingHousesManage";
     }
 
     @RequestMapping("/back/updateVideo")
-    public String updateVideo(Integer id,MultipartFile video){
+    public String updateVideo(Integer id,MultipartFile video,String role){
         houseService.updateVideo(id,video);
-        return "redirect:/back/houseManage";
+        if(role.equals("admin"))
+            return "redirect:/back/houseManage";
+        else
+            return "redirect:/back/rentingHousesManage";
+
     }
 
 }

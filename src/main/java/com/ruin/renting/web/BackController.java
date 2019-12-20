@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.jws.soap.SOAPBinding;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -61,8 +63,12 @@ public class BackController {
     @RequestMapping("/houseManage")
     public String goHouse(Model model,@RequestParam(defaultValue = "0")int pageNum) {
         Page<House> data=houseService.findAllHouses(PageRequest.of(pageNum,10));
+        List<SysUser>users=userService.findAllUsers();
+
+        model.addAttribute("users",users);
         model.addAttribute("houses",data);
         model.addAttribute("type","show");
+        model.addAttribute("role","admin");
         return "/back/admin/houseManage";
     }
 
@@ -102,6 +108,16 @@ public class BackController {
         Set<House> houses = userService.findUserCollectHouses();
         model.addAttribute("houses",houses);
         return "/back/user/collectManage";
+    }
+
+    @RequestMapping("/rentingHousesManage")
+    public String goRentingHouses(Model model,@RequestParam(defaultValue = "0")int pageNum){
+        SysUser user=userService.findByUserID(userInfo.getCurrentUser().getId());
+        Page<House> houses=houseService.findHouseByOwner(user,PageRequest.of(pageNum,10));
+        model.addAttribute("role","user");
+        model.addAttribute("houses",houses);
+        model.addAttribute("type","show");
+        return "/back/user/rentingHousesManage";
     }
 
     @RequestMapping("/chat")

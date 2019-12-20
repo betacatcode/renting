@@ -167,4 +167,14 @@ public class UserServiceImpl implements UserService {
 
         sysUserRepository.save(user);
     }
+
+    @Override
+    public SysUser findByUserID(Integer ID) {
+        return sysUserRepository.findById(ID).get();
+    }
+
+    @Override
+    public List<SysUser> findAllUsers() {
+        return sysUserRepository.findAll();
+    }
 }

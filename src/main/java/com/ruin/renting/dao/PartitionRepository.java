@@ -14,6 +14,6 @@ public interface PartitionRepository extends JpaRepository<Partition,Integer> {
     public Partition findByName(String name);
 
     @Query(value = "SELECT news_partition_id as pid,count(*) as num from \n" +
-            "tb_news GROUP BY news_partition_id",nativeQuery = true)
+            "tb_news WHERE news_partition_id IS NOT NULL GROUP BY news_partition_id\n",nativeQuery = true)
     public List<Object[]>findEveryPartitionNum();
 }
