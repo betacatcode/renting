@@ -6,6 +6,7 @@ import com.ruin.renting.utils.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -151,4 +152,14 @@ public class BackController {
         model.addAttribute("user",userService.getUserById(userInfo.getCurrentUser().getId()));
         return "/back/user/profile";
     }
+
+    @RequestMapping("/userManage")
+    public String goUser(Model model,@RequestParam(defaultValue = "0")int pageNum){
+        Page<SysUser> users = userService.findAllUsersPaging(PageRequest.of(pageNum, 10));
+        model.addAttribute("users",users);
+        model.addAttribute("type","show");
+        return "/back/admin/userManage";
+    }
+
+
 }

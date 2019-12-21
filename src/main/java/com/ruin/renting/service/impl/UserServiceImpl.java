@@ -1,5 +1,6 @@
 package com.ruin.renting.service.impl;
 
+import com.ruin.renting.config.Data;
 import com.ruin.renting.dao.HouseRepository;
 import com.ruin.renting.dao.MsgRepository;
 import com.ruin.renting.dao.RoleRepository;
@@ -12,6 +13,8 @@ import com.ruin.renting.service.UserService;
 import com.ruin.renting.utils.AvatarUtil;
 import com.ruin.renting.utils.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -159,6 +162,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void updateUser(Integer userID,MultipartFile avatar, String username, String profile, String email, String phone, String password) {
+        SysUser user=sysUserRepository.findById(userID).get();
+        if(!avatar.getOriginalFilename().equals("")){
+            String img=avatarUtil.saveNewsImage(avatar,username);
+            user.setAvatar(img);
+        }
+        if(!username.equals("")){
+            user.setUsername(username);
+        }
+        user.setProfile(profile);
+        user.setEmail(email);
+        user.setPhone(phone);
+        if(!password.equals(""))
+            user.setPassword(password);
+        sysUserRepository.save(user);
+    }
+
+    @Override
     public void updateUser(String password) {
         Integer userID=userInfo.getCurrentUser().getId();
         SysUser user=sysUserRepository.findById(userID).get();
@@ -176,5 +197,45 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<SysUser> findAllUsers() {
         return sysUserRepository.findAll();
+    }
+
+    @Override
+    public Page<SysUser> findAllUsersPaging(Pageable pageable) {
+        return sysUserRepository.findAll(pageable);
+    }
+
+    @Override
+    public void addUser(String username, String phone,String email, String password, String profile, MultipartFile avatar) {
+        String hashPWD = BCrypt.hashpw(password, BCrypt.gensalt());
+
+        SysUser user=new SysUser();
+        user.setUsername(username);
+        user.setPhone(phone);
+        user.setEmail(email);
+        user.setProfile(profile);
+        user.setPassword(hashPWD);
+        if(avatar.getOriginalFilename().equals(""))
+            user.setAvatar("no");
+        else {
+            String img=avatarUtil.saveNewsImage(avatar,username);
+            user.setAvatar(img);
+        }
+        sysUserRepository.save(user);
+    }
+
+    @Override
+    public Integer deleteUserByID(Integer ID) {
+
+        SysUser user=sysUserRepository.findById(ID).get();
+        if(!user.getAvatar().equals("no")){
+            avatarUtil.deleteFile(Data.path+"\\avatar\\"+user.getAvatar());
+        }
+        sysUserRepository.delete(user);
+        return 200;
+    }
+
+    @Override
+    public Page<SysUser> findUsernameLike(String name, Pageable pageable) {
+        return sysUserRepository.findByUsernameLike("%"+name+"%",pageable);
     }
 }
