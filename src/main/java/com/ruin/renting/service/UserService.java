@@ -55,4 +55,6 @@ public interface UserService {
     public Integer deleteUserByID(Integer ID);
 
     public Page<SysUser> findUsernameLike(String name,Pageable pageable);
+
+    public void sayHello(String receiverName);
 }

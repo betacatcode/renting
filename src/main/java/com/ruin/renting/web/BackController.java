@@ -127,9 +127,9 @@ public class BackController {
     }
 
     @RequestMapping("/chat")
-    public String goChat(Model model,String receiverName){
-        model.addAttribute("receiverName",receiverName);
-        return "/back/user/chat";
+    public String goChat(String receiverName){
+        userService.sayHello(receiverName);
+        return "redirect:/back/message";
     }
 
     @RequestMapping("/message")

@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void doRegister(String phone, String email, String username, String password) {
         String hashPWD = BCrypt.hashpw(password, BCrypt.gensalt());
-        SysUser user=new SysUser(username,hashPWD,phone,email,"no","no");
+        SysUser user=new SysUser(username,hashPWD,phone,email,"no","");
         SysRole role=roleRepository.findByName("ROLE_USER");
         user.getRoles().add(role);
         sysUserRepository.save(user);
@@ -243,5 +243,26 @@ public class UserServiceImpl implements UserService {
     @Override
     public Page<SysUser> findUsernameLike(String name, Pageable pageable) {
         return sysUserRepository.findByUsernameLike("%"+name+"%",pageable);
+    }
+
+    @Override
+    public void sayHello(String receiverName) {
+
+        SysUser sender=sysUserRepository.findById(userInfo.getCurrentUser().getId()).get();
+        SysUser receiver=sysUserRepository.findByUsername(receiverName);
+
+        List<Msg> chatInformation = msgRepository.getChatInformation(sender.getId(), receiver.getId());
+        if(chatInformation.size()==0){
+            String content=receiverName+"你好,"+"我对你出租的房子感兴趣,能交流一下吗?";
+            Msg msg=new Msg();
+
+            Date date=new Date(System.currentTimeMillis());
+            msg.setContent(content);
+            msg.setSender(sender);
+            msg.setReceiver(receiver);
+            msg.setSendingTime(date);
+            msgRepository.save(msg);
+        }
+
     }
 }
