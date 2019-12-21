@@ -174,8 +174,11 @@ public class UserServiceImpl implements UserService {
         user.setProfile(profile);
         user.setEmail(email);
         user.setPhone(phone);
-        if(!password.equals(""))
-            user.setPassword(password);
+        if(!password.equals("")){
+            String hashPWD = BCrypt.hashpw(password, BCrypt.gensalt());
+            user.setPassword(hashPWD);
+        }
+
         sysUserRepository.save(user);
     }
 
@@ -220,6 +223,8 @@ public class UserServiceImpl implements UserService {
             String img=avatarUtil.saveNewsImage(avatar,username);
             user.setAvatar(img);
         }
+
+        user.getRoles().add(roleRepository.findByName("ROLE_USER"));
         sysUserRepository.save(user);
     }
 
@@ -227,6 +232,7 @@ public class UserServiceImpl implements UserService {
     public Integer deleteUserByID(Integer ID) {
 
         SysUser user=sysUserRepository.findById(ID).get();
+        user.getRoles().clear();
         if(!user.getAvatar().equals("no")){
             avatarUtil.deleteFile(Data.path+"\\avatar\\"+user.getAvatar());
         }

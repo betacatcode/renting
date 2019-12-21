@@ -89,7 +89,7 @@ public class UserController {
 
     @RequestMapping("/addUser")
     public String addUser(String username,String phone,String email,String password,String profile,MultipartFile avatar){
-        userService.addUser(username,phone,password,email,profile,avatar);
+        userService.addUser(username,phone,email,password,profile,avatar);
         return "redirect:/back/userManage";
     }
 

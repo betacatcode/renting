@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.jws.soap.SOAPBinding;
+import javax.servlet.http.HttpSession;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -53,8 +54,12 @@ public class BackController {
     UserInfo userInfo;
 
     @RequestMapping("/index")
-    public String goIndex(){
-        return "/back/index";
+    public String goIndex(HttpSession session){
+        session.setAttribute("currentUser",userInfo.getCurrentUser());
+        if(userInfo.getCurrentUser().getRoles().iterator().next().getName().equals("ROLE_ADMIN"))
+            return "redirect:/back/houseManage";
+        else
+            return "redirect:/back/collectManage";
     }
 
     @RequestMapping("/login")
